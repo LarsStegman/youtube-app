@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>yt_data_api_v3</key>
+	<string>your_youtube_data_api_key_here</string>
+	<key>required_scopes</key>
+	<array>
+		<string>https://www.googleapis.com/auth/youtube.readonly</string>
+	</array>
+	<key>client_id</key>
+	<string>your_google_client_id_here</string>
+</dict>
+</plist>
