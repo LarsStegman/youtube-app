@@ -34,6 +34,10 @@
 		4846F09622E24AC900174603 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F09522E24AC900174603 /* DataController.swift */; };
 		4846F09822E24AD800174603 /* YTUserInteractionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F09722E24AD800174603 /* YTUserInteractionService.swift */; };
 		4846F09A22E24B1700174603 /* AuthenticationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F09922E24B1600174603 /* AuthenticationController.swift */; };
+		4846F09C22E2502C00174603 /* PersistentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F09B22E2502C00174603 /* PersistentService.swift */; };
+		4846F0A122E39AC300174603 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F0A022E39AC300174603 /* SignInView.swift */; };
+		4846F0A522E3AF8400174603 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F0A422E3AF8400174603 /* SignInVC.swift */; };
+		4846F0A722E3B42B00174603 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F0A622E3B42B00174603 /* ProfileView.swift */; };
 		487C3BE922E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C3BE822E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift */; };
 		487C3BEB22E249D500C68C9A /* Publisher+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C3BEA22E249D500C68C9A /* Publisher+Extensions.swift */; };
 		487C3BF222E249E100C68C9A /* GTLRServiceExecutionParameters+init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C3BED22E249E100C68C9A /* GTLRServiceExecutionParameters+init.swift */; };
@@ -76,6 +80,10 @@
 		4846F09522E24AC900174603 /* DataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		4846F09722E24AD800174603 /* YTUserInteractionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YTUserInteractionService.swift; sourceTree = "<group>"; };
 		4846F09922E24B1600174603 /* AuthenticationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationController.swift; sourceTree = "<group>"; };
+		4846F09B22E2502C00174603 /* PersistentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentService.swift; sourceTree = "<group>"; };
+		4846F0A022E39AC300174603 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		4846F0A422E3AF8400174603 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
+		4846F0A622E3B42B00174603 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		487C3BE822E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ISO8601DateFormatter+TimeInterval.swift"; sourceTree = "<group>"; };
 		487C3BEA22E249D500C68C9A /* Publisher+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publisher+Extensions.swift"; sourceTree = "<group>"; };
 		487C3BED22E249E100C68C9A /* GTLRServiceExecutionParameters+init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GTLRServiceExecutionParameters+init.swift"; sourceTree = "<group>"; };
@@ -121,12 +129,12 @@
 			children = (
 				4846F07222E24A5C00174603 /* api_keys_sample.plist */,
 				4846F07122E24A5C00174603 /* api_keys.plist */,
-				4846F06E22E24A4600174603 /* Stores */,
-				4846F07522E24A7500174603 /* Model */,
 				481F687122E247FB0057ADF1 /* AppDelegate.swift */,
 				481F687322E247FB0057ADF1 /* SceneDelegate.swift */,
-				481F687522E247FB0057ADF1 /* ContentView.swift */,
+				4846F06E22E24A4600174603 /* Stores */,
+				4846F07522E24A7500174603 /* Model */,
 				487C3BE722E249A100C68C9A /* Utility */,
+				4846F09F22E39AAA00174603 /* View */,
 				481F687722E247FD0057ADF1 /* Assets.xcassets */,
 				481F687C22E247FD0057ADF1 /* LaunchScreen.storyboard */,
 				481F687F22E247FD0057ADF1 /* Info.plist */,
@@ -150,6 +158,7 @@
 				4846F09722E24AD800174603 /* YTUserInteractionService.swift */,
 				4846F09522E24AC900174603 /* DataController.swift */,
 				4846F06F22E24A5300174603 /* SecretsStore.swift */,
+				4846F09B22E2502C00174603 /* PersistentService.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -184,9 +193,20 @@
 			path = "Model+GTLRObject";
 			sourceTree = "<group>";
 		};
+		4846F09F22E39AAA00174603 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				481F687522E247FB0057ADF1 /* ContentView.swift */,
+				4846F0A022E39AC300174603 /* SignInView.swift */,
+				4846F0A622E3B42B00174603 /* ProfileView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		487C3BE722E249A100C68C9A /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				4846F0A422E3AF8400174603 /* SignInVC.swift */,
 				487C3BEC22E249E100C68C9A /* SGTLR */,
 				487C3BE822E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift */,
 				487C3BEA22E249D500C68C9A /* Publisher+Extensions.swift */,
@@ -368,8 +388,10 @@
 				487C3BF422E249E100C68C9A /* GTLRYouTubeService+shared.swift in Sources */,
 				4846F08622E24A8600174603 /* VideoPlaybackData.swift in Sources */,
 				4846F08222E24A8600174603 /* ThumbnailDetails.swift in Sources */,
+				4846F0A522E3AF8400174603 /* SignInVC.swift in Sources */,
 				4846F09022E24A9900174603 /* Video+GTLRYouTube_Video.swift in Sources */,
 				4846F08522E24A8600174603 /* Channel.swift in Sources */,
+				4846F09C22E2502C00174603 /* PersistentService.swift in Sources */,
 				4846F09322E24A9900174603 /* Subscription+GTLRYouTube_Subscription.swift in Sources */,
 				481F687422E247FB0057ADF1 /* SceneDelegate.swift in Sources */,
 				4846F08722E24A8600174603 /* YouTubeObject.swift in Sources */,
@@ -387,6 +409,8 @@
 				487C3BEB22E249D500C68C9A /* Publisher+Extensions.swift in Sources */,
 				4846F09422E24A9900174603 /* Channel+GTLRYouTube_Channel.swift in Sources */,
 				487C3BF622E249E100C68C9A /* GTLRService+Publisher.swift in Sources */,
+				4846F0A722E3B42B00174603 /* ProfileView.swift in Sources */,
+				4846F0A122E39AC300174603 /* SignInView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

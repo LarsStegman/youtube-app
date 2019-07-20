@@ -43,6 +43,11 @@ protocol SGTLRCollectionQueryResponse: SGTLRQueryResponse {
     associatedtype Element: GTLRObject
 }
 
+/// A namespace for SGTLRQueries
+enum SGTLRQueries {
+
+}
+
 // MARK: - SGTLRQuery conformance
 extension GTLRYouTubeQuery_ChannelsList: SGTLRCollectionQuery {
     typealias Response = GTLRYouTube_ChannelListResponse

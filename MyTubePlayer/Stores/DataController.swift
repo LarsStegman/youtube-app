@@ -10,12 +10,21 @@ import Foundation
 import GoogleAPIClientForREST
 import GoogleSignIn
 import GTMSessionFetcher
+
 import SwiftUI
+import Combine
 
 
-class DataController: AuthenticationControllerDelegate {
-    private(set) var userInteractionService: YTUserInteractionService?
+class DataController: AuthenticationControllerDelegate, BindableObject {
+    let willChange = PassthroughSubject<Void, Never>()
+
     private(set) lazy var authenticationController = AuthenticationController(delegate: self)
+    private(set) var userInteractionService: YTUserInteractionService? {
+        willSet {
+            willChange.send()
+        }
+    }
+
     var gtlrService: GTLRYouTubeService {
         return self.userInteractionService?.gtlrService ?? GTLRYouTubeService.shared
     }
