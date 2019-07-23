@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let data = (UIApplication.shared.delegate as! MyTubeAppDelegate).dataController
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(
-                rootView: ProfileView()
+                rootView: RootView()
                     .environmentObject(data)
             )
             self.window = window

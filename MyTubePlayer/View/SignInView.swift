@@ -26,14 +26,14 @@ struct SignInView: View {
     }
 
     var body: some View {
-        VStack(alignment: .center, spacing: 10) {
+        VStack(alignment: .leading, spacing: 10) {
             Text(signInText)
+                .padding(.leading, 4)
 
             if !self.dataController.authenticationController.isSignedIn {
                 SignInButton()
                     .style(.wide)
             }
-            Spacer()
         }
     }
 }

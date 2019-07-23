@@ -43,6 +43,7 @@
 		4846F0A522E3AF8400174603 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F0A422E3AF8400174603 /* SignInVC.swift */; };
 		4846F0A722E3B42B00174603 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F0A622E3B42B00174603 /* ProfileView.swift */; };
 		4857C3BE22E62AB400627A21 /* SubscriptionsOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4857C3BD22E62AB400627A21 /* SubscriptionsOverview.swift */; };
+		4872786322E75ECC00C3BE1B /* BasePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4872786222E75ECC00C3BE1B /* BasePublisher.swift */; };
 		487C3BE922E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C3BE822E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift */; };
 		487C3BEB22E249D500C68C9A /* Publisher+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C3BEA22E249D500C68C9A /* Publisher+Extensions.swift */; };
 		487C3BF222E249E100C68C9A /* GTLRServiceExecutionParameters+init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C3BED22E249E100C68C9A /* GTLRServiceExecutionParameters+init.swift */; };
@@ -94,6 +95,7 @@
 		4846F0A422E3AF8400174603 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
 		4846F0A622E3B42B00174603 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		4857C3BD22E62AB400627A21 /* SubscriptionsOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsOverview.swift; sourceTree = "<group>"; };
+		4872786222E75ECC00C3BE1B /* BasePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePublisher.swift; sourceTree = "<group>"; };
 		487C3BE822E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ISO8601DateFormatter+TimeInterval.swift"; sourceTree = "<group>"; };
 		487C3BEA22E249D500C68C9A /* Publisher+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publisher+Extensions.swift"; sourceTree = "<group>"; };
 		487C3BED22E249E100C68C9A /* GTLRServiceExecutionParameters+init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GTLRServiceExecutionParameters+init.swift"; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				487C3BEC22E249E100C68C9A /* SGTLR */,
 				487C3BE822E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift */,
 				487C3BEA22E249D500C68C9A /* Publisher+Extensions.swift */,
+				4872786222E75ECC00C3BE1B /* BasePublisher.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -438,6 +441,7 @@
 				4846F09422E24A9900174603 /* Channel+GTLRYouTube_Channel.swift in Sources */,
 				487C3BF622E249E100C68C9A /* GTLRService+Publisher.swift in Sources */,
 				4846F0A722E3B42B00174603 /* ProfileView.swift in Sources */,
+				4872786322E75ECC00C3BE1B /* BasePublisher.swift in Sources */,
 				4846F0A122E39AC300174603 /* SignInView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

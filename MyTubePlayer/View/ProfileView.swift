@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import GoogleSignIn
 
 struct ProfileView: View {
     @EnvironmentObject var dataController: DataController
@@ -17,13 +18,21 @@ struct ProfileView: View {
 
     var body: some View {
         NavigationView {
-            List {
+            VStack(alignment: .leading) {
                 if !self.dataController.authenticationController.isSignedIn {
                     SignInView()
-                } else {
-                    Text("Subscriptions")
                 }
             }
+            .navigationBarItems(trailing: HStack {
+                if self.dataController.authenticationController.isSignedIn {
+                    Button(action: {
+                        GIDSignIn.sharedInstance().signOut()
+                    }) {
+                        Text("Sign out")
+                    }
+                }
+            })
+            .padding(4)
             .navigationBarTitle(self.username ?? "Profile")
         }
     }
