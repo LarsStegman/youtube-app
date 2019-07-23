@@ -75,6 +75,8 @@ class SGTLRPublisher<Q: SGTLRQuery>: Combine.Publisher {
         guard let obj = object else {
             if let err = error {
                 self.subscriber?.receive(completion: .failure(err))
+            } else {
+                // FIXME: Send a custom error if both the object and the error are nil. This shouldn't happen
             }
             return
         }
@@ -200,11 +202,5 @@ class SGTLRCollectionPublisher<Q: SGTLRCollectionQuery>: Combine.Publisher, Comb
     private func execute(_ query: Q) {
         self.pageSubscription = nil
         self.service.publisher(for: query).receive(subscriber: self)
-    }
-}
-
-extension Combine.Publisher where Output: SGTLRCollectionQueryResponse, Output: GTLRCollectionObject  {
-    func gtlrCollectionSequence() -> Publishers.Map<Self, Array<Output.Element>> {
-        self.map { Array($0) }
     }
 }

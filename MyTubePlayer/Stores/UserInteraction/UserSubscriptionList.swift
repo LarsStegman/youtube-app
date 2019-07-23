@@ -1,8 +1,8 @@
 //
-//  YTUserDataStore.swift
+//  UserSubscriptionList.swift
 //  MyTubePlayer
 //
-//  Created by Lars Stegman on 12/07/2019.
+//  Created by Lars Stegman on 23/07/2019.
 //  Copyright © 2019 Stegman. All rights reserved.
 //
 
@@ -10,6 +10,7 @@ import Foundation
 import Combine
 import SwiftUI
 import GoogleAPIClientForREST
+
 
 extension SGTLRQueries {
     static var subscriptions: GTLRYouTubeQuery_SubscriptionsList {
@@ -22,24 +23,12 @@ extension SGTLRQueries {
 
         return query
     }
-}
 
-/// A store for a user's YouTube data like their subscription feed, subscriptions, playlists, channel
-class YTUserInteractionService {
-
-    let gtlrService: GTLRYouTubeService
-    let persistenceService: PersistenceService
-
-    init(gtlrService: GTLRYouTubeService,
-         persistenceService: PersistenceService) {
-        self.gtlrService = gtlrService
-        self.persistenceService = persistenceService
-
-        self.subscriptions = SubscriptionList(service: gtlrService)
+    static func unsubscribe(_ id: String) -> GTLRYouTubeQuery_SubscriptionsDelete {
+        return GTLRYouTubeQuery_SubscriptionsDelete.query(withIdentifier: id)
     }
-
-    var subscriptions: SubscriptionList
 }
+
 
 class SubscriptionList: BindableObject {
     let willChange = PassthroughSubject<Void, Never>()
@@ -58,21 +47,24 @@ class SubscriptionList: BindableObject {
     }
 
     private let service: GTLRYouTubeService
-    init(service: GTLRYouTubeService) {
+    init(service: GTLRYouTubeService, immediatelyFetch: Bool = true) {
         self.service = service
-        self.refresh()
+        if immediatelyFetch {
+            _ = self.refresh()
+        }
     }
 
     private var refresher: AnyCancellable? = nil
-    func refresh() {
+    func refresh() -> AnyCancellable {
         self.refresher?.cancel()
         self.status = .refreshing
 
-        self.refresher = self.service.publisher(for: SGTLRQueries.subscriptions)
+        let refresher = self.service.publisher(for: SGTLRQueries.subscriptions)
             .gtlrCollectionSequence()
             .map { gtlrSubs in
-                gtlrSubs.compactMap { Subscription(from: $0) }
-            }.sink(
+                return gtlrSubs.compactMap { Subscription(from: $0) }
+            }
+            .sink(
                 receiveCompletion: { (completion) in
                 self.refresher = nil
                 switch completion {
@@ -82,5 +74,19 @@ class SubscriptionList: BindableObject {
             }, receiveValue: { (subs) in
                 self.subscriptions = subs
             })
+
+        self.refresher = refresher
+        return refresher
+    }
+
+    func unsubscribe(from subscription: Subscription) -> AnyPublisher<Never, Error> {
+        let unsubscribing = self.service.publisher(for: SGTLRQueries.unsubscribe(subscription.id))
+        unsubscribing.sink(receiveCompletion: { (completion) in
+            if case .finished = completion, let idx = self.subscriptions.firstIndex(of: subscription) {
+                self.subscriptions.remove(at: idx)
+            }
+        })
+        // FIXME: Multiple subscribers, the sink above and the sink in the UI
+        return unsubscribing.eraseToAnyPublisher()
     }
 }

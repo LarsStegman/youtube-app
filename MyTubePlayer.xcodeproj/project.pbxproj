@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		480DBCC522E63042002FA006 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480DBCC422E63042002FA006 /* RootView.swift */; };
+		480DBCC722E63966002FA006 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480DBCC622E63966002FA006 /* AvatarView.swift */; };
+		480DBCC922E64C6D002FA006 /* SortDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480DBCC822E64C6D002FA006 /* SortDescriptor.swift */; };
+		480DBCCB22E6FACF002FA006 /* UserSubscriptionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480DBCCA22E6FACF002FA006 /* UserSubscriptionList.swift */; };
 		481F687222E247FB0057ADF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481F687122E247FB0057ADF1 /* AppDelegate.swift */; };
 		481F687422E247FB0057ADF1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481F687322E247FB0057ADF1 /* SceneDelegate.swift */; };
 		481F687622E247FB0057ADF1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481F687522E247FB0057ADF1 /* ContentView.swift */; };
@@ -38,6 +42,7 @@
 		4846F0A122E39AC300174603 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F0A022E39AC300174603 /* SignInView.swift */; };
 		4846F0A522E3AF8400174603 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F0A422E3AF8400174603 /* SignInVC.swift */; };
 		4846F0A722E3B42B00174603 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F0A622E3B42B00174603 /* ProfileView.swift */; };
+		4857C3BE22E62AB400627A21 /* SubscriptionsOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4857C3BD22E62AB400627A21 /* SubscriptionsOverview.swift */; };
 		487C3BE922E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C3BE822E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift */; };
 		487C3BEB22E249D500C68C9A /* Publisher+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C3BEA22E249D500C68C9A /* Publisher+Extensions.swift */; };
 		487C3BF222E249E100C68C9A /* GTLRServiceExecutionParameters+init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487C3BED22E249E100C68C9A /* GTLRServiceExecutionParameters+init.swift */; };
@@ -51,6 +56,10 @@
 /* Begin PBXFileReference section */
 		380D17519FCCA9DECB168E16 /* Pods-MyTubePlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyTubePlayer.debug.xcconfig"; path = "Target Support Files/Pods-MyTubePlayer/Pods-MyTubePlayer.debug.xcconfig"; sourceTree = "<group>"; };
 		41A1F003B39C1ABA50022EC0 /* Pods_MyTubePlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyTubePlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		480DBCC422E63042002FA006 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		480DBCC622E63966002FA006 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		480DBCC822E64C6D002FA006 /* SortDescriptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortDescriptor.swift; sourceTree = "<group>"; };
+		480DBCCA22E6FACF002FA006 /* UserSubscriptionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscriptionList.swift; sourceTree = "<group>"; };
 		481F686E22E247FB0057ADF1 /* MyTubePlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTubePlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		481F687122E247FB0057ADF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		481F687322E247FB0057ADF1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +93,7 @@
 		4846F0A022E39AC300174603 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		4846F0A422E3AF8400174603 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
 		4846F0A622E3B42B00174603 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		4857C3BD22E62AB400627A21 /* SubscriptionsOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsOverview.swift; sourceTree = "<group>"; };
 		487C3BE822E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ISO8601DateFormatter+TimeInterval.swift"; sourceTree = "<group>"; };
 		487C3BEA22E249D500C68C9A /* Publisher+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publisher+Extensions.swift"; sourceTree = "<group>"; };
 		487C3BED22E249E100C68C9A /* GTLRServiceExecutionParameters+init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GTLRServiceExecutionParameters+init.swift"; sourceTree = "<group>"; };
@@ -106,6 +116,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		480DBCCC22E70214002FA006 /* UserInteraction */ = {
+			isa = PBXGroup;
+			children = (
+				4846F09722E24AD800174603 /* YTUserInteractionService.swift */,
+				480DBCCA22E6FACF002FA006 /* UserSubscriptionList.swift */,
+			);
+			path = UserInteraction;
+			sourceTree = "<group>";
+		};
 		481F686522E247FA0057ADF1 = {
 			isa = PBXGroup;
 			children = (
@@ -154,8 +173,8 @@
 		4846F06E22E24A4600174603 /* Stores */ = {
 			isa = PBXGroup;
 			children = (
+				480DBCCC22E70214002FA006 /* UserInteraction */,
 				4846F09922E24B1600174603 /* AuthenticationController.swift */,
-				4846F09722E24AD800174603 /* YTUserInteractionService.swift */,
 				4846F09522E24AC900174603 /* DataController.swift */,
 				4846F06F22E24A5300174603 /* SecretsStore.swift */,
 				4846F09B22E2502C00174603 /* PersistentService.swift */,
@@ -199,6 +218,9 @@
 				481F687522E247FB0057ADF1 /* ContentView.swift */,
 				4846F0A022E39AC300174603 /* SignInView.swift */,
 				4846F0A622E3B42B00174603 /* ProfileView.swift */,
+				4857C3BD22E62AB400627A21 /* SubscriptionsOverview.swift */,
+				480DBCC422E63042002FA006 /* RootView.swift */,
+				480DBCC622E63966002FA006 /* AvatarView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -206,6 +228,7 @@
 		487C3BE722E249A100C68C9A /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				480DBCC822E64C6D002FA006 /* SortDescriptor.swift */,
 				4846F0A422E3AF8400174603 /* SignInVC.swift */,
 				487C3BEC22E249E100C68C9A /* SGTLR */,
 				487C3BE822E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift */,
@@ -378,9 +401,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4857C3BE22E62AB400627A21 /* SubscriptionsOverview.swift in Sources */,
+				480DBCCB22E6FACF002FA006 /* UserSubscriptionList.swift in Sources */,
 				481F687222E247FB0057ADF1 /* AppDelegate.swift in Sources */,
 				487C3BE922E249C700C68C9A /* ISO8601DateFormatter+TimeInterval.swift in Sources */,
 				4846F09822E24AD800174603 /* YTUserInteractionService.swift in Sources */,
+				480DBCC522E63042002FA006 /* RootView.swift in Sources */,
 				4846F07F22E24A8600174603 /* Thumbnail.swift in Sources */,
 				487C3BF322E249E100C68C9A /* SGTLRQuery.swift in Sources */,
 				4846F09622E24AC900174603 /* DataController.swift in Sources */,
@@ -401,11 +427,13 @@
 				4846F08422E24A8600174603 /* LiveBroadcastInformation.swift in Sources */,
 				4846F08322E24A8600174603 /* Playlist.swift in Sources */,
 				4846F09122E24A9900174603 /* GTLRObject+YouTubeObject.swift in Sources */,
+				480DBCC722E63966002FA006 /* AvatarView.swift in Sources */,
 				4846F09222E24A9900174603 /* Playlist+GTLRYouTube_Playlist.swift in Sources */,
 				4846F09A22E24B1700174603 /* AuthenticationController.swift in Sources */,
 				4846F08022E24A8600174603 /* Video.swift in Sources */,
 				481F687622E247FB0057ADF1 /* ContentView.swift in Sources */,
 				4846F08F22E24A9900174603 /* Thumbnail+GTLRYouTube_ThumbnailDetails.swift in Sources */,
+				480DBCC922E64C6D002FA006 /* SortDescriptor.swift in Sources */,
 				487C3BEB22E249D500C68C9A /* Publisher+Extensions.swift in Sources */,
 				4846F09422E24A9900174603 /* Channel+GTLRYouTube_Channel.swift in Sources */,
 				487C3BF622E249E100C68C9A /* GTLRService+Publisher.swift in Sources */,

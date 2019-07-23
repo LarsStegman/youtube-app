@@ -22,3 +22,9 @@ extension Publisher {
         }
     }
 }
+
+extension Publisher where Output == Never {
+    func sink(receiveCompletion: @escaping (Subscribers.Completion<Self.Failure>) -> Void) -> AnyCancellable {
+        self.sink(receiveCompletion: receiveCompletion, receiveValue: {_ in })
+    }
+}

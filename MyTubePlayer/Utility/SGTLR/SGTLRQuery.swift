@@ -25,12 +25,14 @@ protocol SGTLRCollectionQuery: SGTLRQuery where Response: SGTLRCollectionQueryRe
 
 
 /// A GTLRQuery response
-protocol SGTLRQueryResponse {
+public protocol SGTLRQueryResponse {
 }
+
+extension Never: SGTLRQueryResponse {}
 
 /// A GTLRCollectionQueryResponse is usually a GTLRCollectionObject. This can be used to control pagination and to determine what kind of elements will be
 /// returned.
-protocol SGTLRCollectionQueryResponse: SGTLRQueryResponse {
+public protocol SGTLRCollectionQueryResponse: SGTLRQueryResponse, Sequence where Element: GTLRObject {
     /// The page token for the next page, if there is one.
     var nextPageToken: String? { get }
     /// The page token for the previous page, if there is one.
@@ -39,8 +41,6 @@ protocol SGTLRCollectionQueryResponse: SGTLRQueryResponse {
     /// The info for all pages.
     var pageInfo: GTLRYouTube_PageInfo? { get }
     var tokenPagination: GTLRYouTube_TokenPagination? { get }
-
-    associatedtype Element: GTLRObject
 }
 
 /// A namespace for SGTLRQueries
@@ -53,19 +53,23 @@ extension GTLRYouTubeQuery_ChannelsList: SGTLRCollectionQuery {
     typealias Response = GTLRYouTube_ChannelListResponse
 }
 extension GTLRYouTube_ChannelListResponse: SGTLRCollectionQueryResponse {
-    typealias Element = GTLRYouTube_Channel
+    public typealias Element = GTLRYouTube_Channel
 }
 
 extension GTLRYouTubeQuery_PlaylistItemsList: SGTLRCollectionQuery {
     typealias Response = GTLRYouTube_PlaylistItemListResponse
 }
 extension GTLRYouTube_PlaylistItemListResponse: SGTLRCollectionQueryResponse {
-    typealias Element = GTLRYouTube_PlaylistItem
+    public typealias Element = GTLRYouTube_PlaylistItem
 }
 
 extension GTLRYouTubeQuery_SubscriptionsList: SGTLRCollectionQuery {
     typealias Response = GTLRYouTube_SubscriptionListResponse
 }
 extension GTLRYouTube_SubscriptionListResponse: SGTLRCollectionQueryResponse {
-    typealias Element = GTLRYouTube_Subscription
+    public typealias Element = GTLRYouTube_Subscription
+}
+
+extension GTLRYouTubeQuery_SubscriptionsDelete: SGTLRQuery {
+    typealias Response = Never
 }

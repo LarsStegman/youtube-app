@@ -18,11 +18,15 @@ import Combine
 class DataController: AuthenticationControllerDelegate, BindableObject {
     let willChange = PassthroughSubject<Void, Never>()
 
-    private(set) lazy var authenticationController = AuthenticationController(delegate: self)
+    private(set) var authenticationController = AuthenticationController()
     private(set) var userInteractionService: YTUserInteractionService? {
         willSet {
             willChange.send()
         }
+    }
+
+    init() {
+        self.authenticationController.delegate = self
     }
 
     var gtlrService: GTLRYouTubeService {

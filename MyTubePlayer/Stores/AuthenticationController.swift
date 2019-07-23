@@ -18,7 +18,7 @@ class AuthenticationController: NSObject, GIDSignInDelegate {
     }
 
     var isSignedIn: Bool {
-        return self.user != nil
+        return GIDSignIn.sharedInstance().hasAuthInKeychain()
     }
 
     var delegate: AuthenticationControllerDelegate?

@@ -21,4 +21,3 @@ struct ThumbnailDetails {
 }
 
 extension ThumbnailDetails: Codable {}
-
