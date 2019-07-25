@@ -32,7 +32,7 @@ struct ProfileView: View {
                     }
                 }
             })
-            .padding(4)
+            .padding(8)
             .navigationBarTitle(self.username ?? "Profile")
         }
     }

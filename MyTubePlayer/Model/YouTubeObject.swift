@@ -14,11 +14,15 @@ class YouTubeObject: Codable {
     var publicationDate: Date?
     var title: String?
     var thumbnail: ThumbnailDetails?
-    var isLoaded = false
+    var isLoaded: Bool {
+        return self.description != nil &&
+            self.publicationDate != nil &&
+            self.title != nil &&
+            self.thumbnail != nil
+    }
 
     init(id: String) {
         self.id = id
-        self.isLoaded = false
     }
 
     init(id: String, title: String, description: String, publicationDate: Date, thumbnail: ThumbnailDetails) {
@@ -27,20 +31,25 @@ class YouTubeObject: Codable {
         self.description = description
         self.publicationDate = publicationDate
         self.thumbnail = thumbnail
-        self.isLoaded = true
     }
 
     init?(from: YouTubeObjectable) {
-        guard let thumbnail = ThumbnailDetails(from: from.thumbnailDetails) else {
+        self.id = from.id
+        self.load(from: from)
+        if !self.isLoaded {
             return nil
         }
+    }
 
-        self.id = from.id
+    func load(from: YouTubeObjectable) {
+        guard let thumbnail = ThumbnailDetails(from: from.thumbnailDetails) else {
+            return
+        }
+
         self.title = from.title
         self.description = from.publicDescription
         self.publicationDate = from.publicationDate
         self.thumbnail = thumbnail
-        self.isLoaded = true
     }
 }
 

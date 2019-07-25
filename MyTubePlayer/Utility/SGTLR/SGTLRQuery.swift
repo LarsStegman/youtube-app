@@ -49,6 +49,8 @@ enum SGTLRQueries {
 }
 
 // MARK: - SGTLRQuery conformance
+
+// MARK: Channel
 extension GTLRYouTubeQuery_ChannelsList: SGTLRCollectionQuery {
     typealias Response = GTLRYouTube_ChannelListResponse
 }
@@ -56,13 +58,8 @@ extension GTLRYouTube_ChannelListResponse: SGTLRCollectionQueryResponse {
     public typealias Element = GTLRYouTube_Channel
 }
 
-extension GTLRYouTubeQuery_PlaylistItemsList: SGTLRCollectionQuery {
-    typealias Response = GTLRYouTube_PlaylistItemListResponse
-}
-extension GTLRYouTube_PlaylistItemListResponse: SGTLRCollectionQueryResponse {
-    public typealias Element = GTLRYouTube_PlaylistItem
-}
 
+// MARK: Subscriptions
 extension GTLRYouTubeQuery_SubscriptionsList: SGTLRCollectionQuery {
     typealias Response = GTLRYouTube_SubscriptionListResponse
 }
@@ -72,4 +69,29 @@ extension GTLRYouTube_SubscriptionListResponse: SGTLRCollectionQueryResponse {
 
 extension GTLRYouTubeQuery_SubscriptionsDelete: SGTLRQuery {
     typealias Response = Never
+}
+
+
+// MARK: Playlist
+extension GTLRYouTubeQuery_PlaylistsList: SGTLRCollectionQuery {
+    typealias Response = GTLRYouTube_PlaylistListResponse
+}
+extension GTLRYouTube_PlaylistListResponse: SGTLRCollectionQueryResponse {
+    public typealias Element = GTLRYouTube_Playlist
+}
+
+extension GTLRYouTubeQuery_PlaylistItemsList: SGTLRCollectionQuery {
+    typealias Response = GTLRYouTube_PlaylistItemListResponse
+}
+extension GTLRYouTube_PlaylistItemListResponse: SGTLRCollectionQueryResponse {
+    public typealias Element = GTLRYouTube_PlaylistItem
+}
+
+
+// MARK: Videos
+extension GTLRYouTubeQuery_VideosList: SGTLRCollectionQuery {
+    typealias Response = GTLRYouTube_VideoListResponse
+}
+extension GTLRYouTube_VideoListResponse: SGTLRCollectionQueryResponse {
+    public typealias Element = GTLRYouTube_Video
 }

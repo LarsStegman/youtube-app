@@ -76,3 +76,9 @@ class Channel: YouTubeObject {
         try super.encode(to: container.superEncoder())
     }
 }
+
+extension Channel: CustomDebugStringConvertible {
+    var debugDescription: String {
+        return "Channel \(self.id), title: \(self.title), isLoaded: \(self.isLoaded)"
+    }
+}

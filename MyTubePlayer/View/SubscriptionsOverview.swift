@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct SubscriptionsOverview: View {
     @EnvironmentObject var data: DataController
@@ -34,7 +35,7 @@ struct SubscriptionCell: View {
     let subscription: Subscription
 
     private var placeholderImageName: String {
-        if let startChar = subscription.title?.lowercased().first {
+        if let startChar = subscription.title?.lowercased().split(separator: " ").first(where: {$0 != "the"})?.first {
             return "\(startChar).square"
         } else {
             return "square"
@@ -70,6 +71,7 @@ extension Optional: Comparable where Wrapped: Comparable {
 
 struct SubscriptionListView: View {
     @ObjectBinding var subscriptions: SubscriptionList
+    @EnvironmentObject var dataController: DataController
 
     var orderedSubscriptions: [Subscription] {
         return self.subscriptions.subscriptions.sorted(by: self.sort)
@@ -88,25 +90,34 @@ struct SubscriptionListView: View {
 
     @State private var showingAlert = false
     @State private var alert: Error? = nil
+    @State private var deleting: Cancellable? = nil
     private func delete(subscription at: IndexSet) {
         guard let i = at.first else {
             return
         }
 
-        self.subscriptions.unsubscribe(from: self.orderedSubscriptions[i])
+        self.deleting = self.subscriptions.unsubscribe(from: self.orderedSubscriptions[i])
             .sink { (completion) in
                 if case .failure(let err) = completion {
                     self.alert = err
                     self.showingAlert = true
                 }
+                self.deleting = nil
             }
     }
 
     var body: some View {
         List {
             Text("\(orderedSubscriptions.count) subscriptions")
-            ForEach(orderedSubscriptions, id: \.id) {
-                SubscriptionCell(subscription: $0)
+            ForEach(orderedSubscriptions, id: \.id) { sub in
+                NavigationLink(
+                    destination: LoadingView(
+                        GTLRObjectLoader(sub.channel, service: self.dataController.gtlrService),
+                        containedView: { ChannelView(channel: $0) }
+                    ),
+                    label: {
+                        SubscriptionCell(subscription: sub)
+                })
             }
             .onDelete(perform: delete(subscription:))
         }
@@ -119,6 +130,7 @@ struct SubscriptionListView: View {
                     .default(Text("Title, descending"), onTrigger: { self.sort = .descending(on: \.title) }),
                     .default(Text("Title, ascending"), onTrigger: { self.sort = .ascending(on: \.title) }),
                     .default(Text("Subscription date"),  onTrigger: { self.sort = .descending(on: \.publicationDate) }),
+                    .cancel()
             ])
         }
         .alert(isPresented: $showingAlert) {

@@ -19,6 +19,9 @@ extension SGTLRCollectionQueryResponse where Self: GTLRCollectionObject {
 
 
 extension GTLRCollectionObject {
+    /// The number of elements in this collection objectt
+    ///
+    /// FIXME: We shouldn't need to go into the JSON
     var count: Int {
         return (self.json?["items"] as? NSArray)?.count ?? 0
     }
@@ -41,7 +44,6 @@ public struct GTLRCollectionObjectIterator<E>: IteratorProtocol {
     }
 
     public mutating func next() -> E? {
-        // FIXME: I don't want to go into the json to find the length
         guard self.object.count > self.index else {
             return nil
         }

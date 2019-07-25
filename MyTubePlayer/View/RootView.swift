@@ -10,8 +10,10 @@ import SwiftUI
 
 struct RootView: View {
     @EnvironmentObject var userData: DataController
+
+    @State var selected = 1
     var body: some View {
-        TabbedView {
+        TabbedView(selection: self.$selected) {
             Text("Your subscription feed")
                 .tabItem {
                     VStack {

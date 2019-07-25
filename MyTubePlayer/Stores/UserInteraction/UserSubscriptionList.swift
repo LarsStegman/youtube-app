@@ -39,7 +39,11 @@ class SubscriptionList: BindableObject {
         case failed(Error)
     }
 
-    var subscriptions = [Subscription]()
+    var subscriptions = [Subscription]() {
+        willSet {
+            self.willChange.send()
+        }
+    }
     var status: RefreshStatus = .uninitialised {
         willSet {
             self.willChange.send()
@@ -79,12 +83,15 @@ class SubscriptionList: BindableObject {
         return refresher
     }
 
+    var deleteSubscription: Cancellable? = nil
     func unsubscribe(from subscription: Subscription) -> AnyPublisher<Never, Error> {
         let unsubscribing = self.service.publisher(for: SGTLRQueries.unsubscribe(subscription.id))
-        unsubscribing.sink(receiveCompletion: { (completion) in
-            if case .finished = completion, let idx = self.subscriptions.firstIndex(of: subscription) {
-                self.subscriptions.remove(at: idx)
-            }
+        self.deleteSubscription = unsubscribing.sink(
+            receiveCompletion: { (completion) in
+                if case .finished = completion, let idx = self.subscriptions.firstIndex(of: subscription) {
+                    self.subscriptions.remove(at: idx)
+                }
+                self.deleteSubscription = nil
         })
         // FIXME: Multiple subscribers, the sink above and the sink in the UI
         return unsubscribing.eraseToAnyPublisher()
