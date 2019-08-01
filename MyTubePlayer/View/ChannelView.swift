@@ -10,24 +10,45 @@ import SwiftUI
 import GoogleAPIClientForREST
 
 struct ChannelView: View {
-    @Binding var channel: Channel
+    let channel: Channel
 
+    init(channel: Channel) {
+        self.channel = channel
+        print("Channel view init: \(channel)")
+    }
+
+    @State var selectedView = 0
     var body: some View {
-        VStack(alignment: .leading) {
-            Image("ba_banner")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 70)
-                .clipped()
-                .listRowInsets(EdgeInsets())
-            
-            ChannelNameView(channel: self.channel)
-                .padding([.leading, .trailing], 16)
-            Divider()
-                .padding(.bottom, -8)
-            List(Array(Range(1...50)), id: \.self) {
-                Text("\($0)")
+        VStack {
+            VStack(alignment: .leading) {
+                Banner(imageName: "ba_banner")
+                    .frame(maxHeight: 50)
+                Group {
+                    ChannelNameView(channel: self.channel)
+                    Divider()
+                    Picker(selection: self.$selectedView, label: Text("Thingy")) {
+                        Text("Uploads")
+                            .tag(0)
+                        Text("Playlists")
+                            .tag(1)
+
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                }
+                    .padding([.leading, .trailing, .top], 8)
+            }
+
+            if selectedView == 0 {
+                List(Array(Range(1...50)), id: \.self) {
+                    Text("\($0)")
+                }
+            } else {
+                Text("Playlists")
+                    .padding([.leading, .trailing], 8)
+                Spacer()
             }
         }
+
+//        .navigationBarHidden(true)
     }
 }

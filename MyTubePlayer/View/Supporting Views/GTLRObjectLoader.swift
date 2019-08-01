@@ -10,33 +10,32 @@ import SwiftUI
 import Combine
 import GoogleAPIClientForREST
 
-class GTLRObjectLoader<O: YouTubeObjectRefreshable>: ValueLoader, BindableObject {
+class GTLRObjectLoader<O: YouTubeObjectRefreshable>: ValueLoader, Combine.ObservableObject {
     typealias Value = O
 
-    let willChange = PassthroughSubject<Void, Never>()
+    let objectWillChange = PassthroughSubject<Void, Never>()
     let service: GTLRService
 
-    var data: O {
-        willSet {
-            willChange.send()
-        }
-    }
+    @Published var data: O
 
-    required init(_ data: O, service: GTLRService) {
+    init(_ data: O, service: GTLRService) {
         self.data = data
         self.service = service
     }
 
     private var loader: Cancellable? = nil
     func load() {
+        self.loader?.cancel()
+        self.loader = nil
         if !data.isLoaded, let q = data.refreshQuery {
             self.loader = self.service.publisher(for: q)
                 .ignoreError()
-                .sink {
-                    self.willChange.send()
-                    self.data.load(from: $0)
+                .sink(receiveCompletion: { _ in
                     self.loader = nil
-                }
-        }
+                }, receiveValue: {
+                    self.objectWillChange.send()
+                    self.data.load(from: $0)
+                })
+            }
     }
 }

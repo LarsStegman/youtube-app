@@ -10,14 +10,16 @@ import SwiftUI
 
 struct ChannelNameView: View {
     @EnvironmentObject var dataController: DataController
-    var channel: Channel
+    let channel: Channel
 
     @State var isSubscribed = false
 
 
     var body: some View {
-        HStack(alignment: .center) {
+        print("Channel name view \(channel)")
+        return HStack(alignment: .center) {
             BannerImage()
+                .frame(width: 60, height: 60)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(self.channel.title ?? "Loading...")

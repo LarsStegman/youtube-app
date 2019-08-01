@@ -53,8 +53,13 @@ class YouTubeObject: Codable {
     }
 }
 
-extension YouTubeObject: Equatable {
+extension YouTubeObject: Equatable, Hashable {
     static func ==(lhs: YouTubeObject, rhs: YouTubeObject) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.isLoaded == rhs.isLoaded
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+        hasher.combine(self.isLoaded)
     }
 }

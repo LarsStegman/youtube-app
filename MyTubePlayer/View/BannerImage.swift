@@ -12,7 +12,6 @@ struct BannerImage: View {
     var body: some View {
         Image("ba_avatar")
             .resizable()
-            .frame(width: 50, height: 50)
             .aspectRatio(contentMode: ContentMode.fill)
             .clipShape(Circle())
             .overlay(Circle().stroke(Color.white, lineWidth: 2))

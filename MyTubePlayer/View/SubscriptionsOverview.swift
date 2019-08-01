@@ -52,8 +52,8 @@ struct SubscriptionCell: View {
                     .font(.body)
                 Text(subscription.description ?? "No description")
                     .font(.footnote)
+                    .lineLimit(1)
             }
-            Spacer()
         }
     }
 }
@@ -70,7 +70,7 @@ extension Optional: Comparable where Wrapped: Comparable {
 
 
 struct SubscriptionListView: View {
-    @ObjectBinding var subscriptions: SubscriptionList
+    @ObservedObject var subscriptions: SubscriptionList
     @EnvironmentObject var dataController: DataController
 
     var orderedSubscriptions: [Subscription] {
@@ -111,13 +111,19 @@ struct SubscriptionListView: View {
             Text("\(orderedSubscriptions.count) subscriptions")
             ForEach(orderedSubscriptions, id: \.id) { sub in
                 NavigationLink(
-                    destination: LoadingView(
+                    destination: ValueLoadingContainerView(
                         GTLRObjectLoader(sub.channel, service: self.dataController.gtlrService),
-                        containedView: { ChannelView(channel: $0) }
-                    ),
-                    label: {
+                        contained: { channel in
+                            Text(channel.title ?? "Loading simple text")
+                            Divider()
+                            ChannelNameView(channel: channel)
+//                            Divider()
+//                            ChannelView(channel: channel)
+                            Spacer()
+                        }
+                    )) {
                         SubscriptionCell(subscription: sub)
-                })
+                    }
             }
             .onDelete(perform: delete(subscription:))
         }
@@ -127,9 +133,9 @@ struct SubscriptionListView: View {
                 title: Text("Sort on"),
                 message: nil,
                 buttons: [
-                    .default(Text("Title, descending"), onTrigger: { self.sort = .descending(on: \.title) }),
-                    .default(Text("Title, ascending"), onTrigger: { self.sort = .ascending(on: \.title) }),
-                    .default(Text("Subscription date"),  onTrigger: { self.sort = .descending(on: \.publicationDate) }),
+                    .default(Text("Title, descending"), action: { self.sort = .descending(on: \.title) }),
+                    .default(Text("Title, ascending"), action: { self.sort = .ascending(on: \.title) }),
+                    .default(Text("Subscription date"), action: { self.sort = .descending(on: \.publicationDate) }),
                     .cancel()
             ])
         }

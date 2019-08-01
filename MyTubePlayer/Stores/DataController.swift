@@ -11,19 +11,12 @@ import GoogleAPIClientForREST
 import GoogleSignIn
 import GTMSessionFetcher
 
-import SwiftUI
 import Combine
 
 
-class DataController: AuthenticationControllerDelegate, BindableObject {
-    let willChange = PassthroughSubject<Void, Never>()
-
+class DataController: AuthenticationControllerDelegate, ObservableObject {
     private(set) var authenticationController = AuthenticationController()
-    private(set) var userInteractionService: YTUserInteractionService? {
-        willSet {
-            willChange.send()
-        }
-    }
+    @Published private(set) var userInteractionService: YTUserInteractionService? = nil
 
     init() {
         self.authenticationController.delegate = self

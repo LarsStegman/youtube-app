@@ -13,7 +13,7 @@ struct RootView: View {
 
     @State var selected = 1
     var body: some View {
-        TabbedView(selection: self.$selected) {
+        TabView(selection: self.$selected) {
             Text("Your subscription feed")
                 .tabItem {
                     VStack {

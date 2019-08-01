@@ -13,22 +13,28 @@ struct SubscribeButton: View {
 
     var body: some View {
         return Button(action: {
-            self.isSubscribed.toggle()
+            withAnimation {
+                self.isSubscribed.toggle()
+            }
         }) {
-            if self.isSubscribed {
-                Image(systemName: "checkmark.circle")
-            } else {
-                HStack(spacing: 8) {
-                    Image(systemName: "plus")
+            HStack(spacing: 2) {
+                Image(systemName: self.isSubscribed ? "checkmark.circle" : "plus")
+                    .imageScale(self.isSubscribed ? .large : .medium)
+                if !self.isSubscribed {
                     Text("Subscribe")
                         .font(.callout)
+                        .transition(.opacity)
+                        .animation(nil)
                 }
-                .padding(5)
             }
+            .padding(5)
+            .padding([.leading, .trailing], isSubscribed ? 0 : 8)
         }
+        .frame(minWidth: 30, minHeight: 30)
         .foregroundColor(.white)
         .background(Color.accentColor)
-        .cornerRadius(20)
+        .cornerRadius(15)
+
     }
 }
 
