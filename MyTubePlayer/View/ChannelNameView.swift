@@ -10,14 +10,12 @@ import SwiftUI
 
 struct ChannelNameView: View {
     @EnvironmentObject var dataController: DataController
-    let channel: Channel
+    var channel: Channel
 
     @State var isSubscribed = false
 
-
     var body: some View {
-        print("Channel name view \(channel)")
-        return HStack(alignment: .center) {
+        HStack(alignment: .center) {
             BannerImage()
                 .frame(width: 60, height: 60)
 

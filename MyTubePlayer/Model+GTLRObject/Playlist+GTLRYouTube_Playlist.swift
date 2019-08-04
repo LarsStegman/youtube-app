@@ -10,13 +10,13 @@ import Foundation
 import GoogleAPIClientForREST
 
 extension Playlist {
-    convenience init?(from: GTLRYouTube_Playlist) {
+    init?(from: GTLRYouTube_Playlist) {
         guard let channelId = from.snippet?.channelId else {
             return nil
         }
 
-        let channel = Channel(id: channelId)
-        self.init(from: from, channel: channel)
+        let base = YTBaseStruct(from: from)
+        self.init(base: base, channelId: channelId)
     }
 }
 
@@ -37,7 +37,11 @@ extension GTLRYouTube_Playlist: YouTubeObjectable {
         return self.identifier!
     }
 
-    var thumbnailDetails: GTLRYouTube_ThumbnailDetails {
-        return self.snippet!.thumbnails!
+    var thumbnailDetails: ThumbnailDetails? {
+        guard let gtlrThumbnails = self.snippet?.thumbnails else {
+            return nil
+        }
+
+        return ThumbnailDetails(from: gtlrThumbnails)
     }
 }

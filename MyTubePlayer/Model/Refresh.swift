@@ -9,39 +9,49 @@
 import Foundation
 import GoogleAPIClientForREST
 
-protocol YouTubeObjectRefreshable {
+protocol YTRefreshable: YTStruct {
     associatedtype Q: SGTLRQuery
     var isLoaded: Bool { get }
     var refreshQuery: Q? { get }
 
-    func load(from: Q.Response)
+    init?(from: Q.Response)
 }
 
-extension YouTubeObjectRefreshable where Self: YouTubeObject,
-                                            Q: SGTLRCollectionQuery, Q.Response.Element: YouTubeObjectable {
-    func load(from: Q.Response) { // override this in extensions to set properties specific to objects
-        guard let item = Array(from).first else {
-            return
-        }
-
-        self.load(from: item)
+extension YTRefreshable {
+    var isLoaded: Bool {
+        return self.base.isLoaded
     }
 }
 
-extension Channel: YouTubeObjectRefreshable {
+protocol YTStructRefreshable: YTRefreshable where Q: SGTLRCollectionQuery {
+    init?(from: Q.Response.Element)
+}
+
+extension YTStructRefreshable where Q: SGTLRCollectionQuery {
+    init?(from: Q.Response) {
+        guard let item = Array(from).first else {
+            return nil
+        }
+
+        self.init(from: item)
+    }
+}
+
+extension Channel: YTStructRefreshable {
     var refreshQuery: GTLRYouTubeQuery_ChannelsList? {
         return SGTLRQueries.completeChannel(id: self.id)
     }
 }
 
-extension Playlist: YouTubeObjectRefreshable {
-    var refreshQuery: GTLRYouTubeQuery_PlaylistsList? {
-        return SGTLRQueries.completePlaylist(id: self.id)
-    }
-}
 
-extension Video: YouTubeObjectRefreshable {
-    var refreshQuery: GTLRYouTubeQuery_VideosList? {
-        return SGTLRQueries.completeVideo(id: self.id)
-    }
-}
+//extension Playlist: YouTubeObjectRefreshable {
+//    var refreshQuery: GTLRYouTubeQuery_PlaylistsList? {
+//        return SGTLRQueries.completePlaylist(id: self.id)
+//    }
+//}
+//
+//extension Video: YouTubeObjectRefreshable {
+//    var refreshQuery: GTLRYouTubeQuery_VideosList? {
+//        return SGTLRQueries.completeVideo(id: self.id)
+//    }
+//}

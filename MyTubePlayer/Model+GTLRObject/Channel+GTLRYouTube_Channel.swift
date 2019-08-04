@@ -9,7 +9,22 @@
 import Foundation
 import GoogleAPIClientForREST
 
+extension Channel {
+    init?(from: GTLRYouTube_Channel) {
+        self.base = YTBaseStruct(from: from)
+        self.uploadsId = from.contentDetails?.relatedPlaylists?.uploads
+    }
+}
+
 extension GTLRYouTube_Channel: YouTubeObjectable {
+    var thumbnailDetails: ThumbnailDetails? {
+        if let thumb = self.snippet?.thumbnails {
+            return ThumbnailDetails(from: thumb)
+        } else {
+            return nil
+        }
+    }
+
     var title: String {
         return self.snippet!.title!
     }
@@ -24,9 +39,5 @@ extension GTLRYouTube_Channel: YouTubeObjectable {
 
     var id: String {
         return self.identifier!
-    }
-
-    var thumbnailDetails: GTLRYouTube_ThumbnailDetails {
-        return self.snippet!.thumbnails!
     }
 }

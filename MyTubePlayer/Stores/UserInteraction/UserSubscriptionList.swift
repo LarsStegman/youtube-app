@@ -30,8 +30,8 @@ extension SGTLRQueries {
 }
 
 
-class SubscriptionList: BindableObject {
-    let willChange = PassthroughSubject<Void, Never>()
+class SubscriptionList: ObservableObject {
+    let objectWillChange = PassthroughSubject<Void, Never>()
     enum RefreshStatus {
         case uninitialised
         case finished
@@ -41,12 +41,12 @@ class SubscriptionList: BindableObject {
 
     var subscriptions = [Subscription]() {
         willSet {
-            self.willChange.send()
+            self.objectWillChange.send()
         }
     }
     var status: RefreshStatus = .uninitialised {
         willSet {
-            self.willChange.send()
+            self.objectWillChange.send()
         }
     }
 
@@ -93,7 +93,7 @@ class SubscriptionList: BindableObject {
                 }
                 self.deleteSubscription = nil
         })
-        // FIXME: Multiple subscribers, the sink above and the sink in the UI
+        
         return unsubscribing.eraseToAnyPublisher()
     }
 }

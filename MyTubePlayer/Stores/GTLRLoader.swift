@@ -1,23 +1,22 @@
 //
-//  GTLRObjectLoader.swift
+//  StructLoader.swift
 //  MyTubePlayer
 //
-//  Created by Lars Stegman on 24/07/2019.
+//  Created by Lars Stegman on 04/08/2019.
 //  Copyright © 2019 Stegman. All rights reserved.
 //
 
-import SwiftUI
+import Foundation
 import Combine
+import SwiftUI
 import GoogleAPIClientForREST
 
-class GTLRObjectLoader<O: YouTubeObjectRefreshable>: ValueLoader, Combine.ObservableObject {
-    typealias Value = O
 
-    let objectWillChange = PassthroughSubject<Void, Never>()
+class GTLRLoader<O: YTStructRefreshable>: ValueLoader, ObservableObject {
+    typealias Value = O
     let service: GTLRService
 
     @Published var data: O
-
     init(_ data: O, service: GTLRService) {
         self.data = data
         self.service = service
@@ -32,9 +31,10 @@ class GTLRObjectLoader<O: YouTubeObjectRefreshable>: ValueLoader, Combine.Observ
                 .ignoreError()
                 .sink(receiveCompletion: { _ in
                     self.loader = nil
-                }, receiveValue: {
-                    self.objectWillChange.send()
-                    self.data.load(from: $0)
+                }, receiveValue: { loadedValue in
+                    if let d = O.init(from: loadedValue) {
+                        self.data = d
+                    }
                 })
             }
     }

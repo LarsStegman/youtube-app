@@ -8,38 +8,25 @@
 
 import Foundation
 
-class Subscription: YouTubeObject {
-    var channel: Channel
+@dynamicMemberLookup
+struct Subscription: YTStruct, Codable {
+    let base: YTBaseStruct
+    let channelId: String
 
-    init(id: String, title: String, description: String, publicationDate: Date, thumbnail: ThumbnailDetails,
-         channel: Channel) {
-        self.channel = channel
-        super.init(id: id, title: title, description: description, publicationDate: publicationDate,
-                   thumbnail: thumbnail)
+    init(base: YTBaseStruct, channelId: String) {
+        self.base = base
+        self.channelId = channelId
     }
 
-    init?(from: YouTubeObjectable, channel: Channel) {
-        self.channel = channel
-        super.init(from: from)
+    subscript<T>(dynamicMember keyPath: KeyPath<YTBaseStruct, T>) -> T {
+        get {
+            base[keyPath: keyPath]
+        }
     }
+}
 
-    enum CodingKeys: String, CodingKey {
-        case channelId
-        case type
-    }
-
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let channelId = try container.decode(String.self, forKey: .channelId)
-        let channel = Channel(id: channelId)
-        self.channel = channel
-        try super.init(from: container.superDecoder())
-    }
-
-    override func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode("\(type(of: self))".lowercased(), forKey: .type)
-        try container.encode(self.channel.id, forKey: .channelId)
-        try super.encode(to: container.superEncoder())
+extension Subscription {
+    var baseChannel: Channel {
+        return Channel(base: YTBaseStruct(id: self.channelId))
     }
 }

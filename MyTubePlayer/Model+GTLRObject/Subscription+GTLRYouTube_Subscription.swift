@@ -10,13 +10,13 @@ import Foundation
 import GoogleAPIClientForREST
 
 extension Subscription {
-    convenience init?(from: GTLRYouTube_Subscription) {
+    init?(from: GTLRYouTube_Subscription) {
         guard let channelId = from.snippet?.resourceId?.channelId else {
             return nil
         }
 
-        let channel = Channel(id: channelId)
-        self.init(from: from, channel: channel)
+        self.base = YTBaseStruct(from: from)
+        self.channelId = channelId
     }
 }
 
@@ -37,7 +37,11 @@ extension GTLRYouTube_Subscription: YouTubeObjectable {
         return self.identifier!
     }
 
-    var thumbnailDetails: GTLRYouTube_ThumbnailDetails {
-        return self.snippet!.thumbnails!
+    var thumbnailDetails: ThumbnailDetails? {
+        guard let gtlrThumbnails = self.snippet?.thumbnails else {
+            return nil
+        }
+
+        return ThumbnailDetails(from: gtlrThumbnails)
     }
 }

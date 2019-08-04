@@ -21,7 +21,8 @@ struct ValueLoadingContainerView<ValueConsumer: View, ValueContainer: ValueLoade
     @ObservedObject var valueLoader: ValueContainer
     let containedView: (ValueContainer.Value) -> ValueConsumer
     
-    init(_ loader: ValueContainer, @ViewBuilder contained: @escaping (ValueContainer.Value) -> ValueConsumer) {
+    init(_ loader: ValueContainer,
+         @ViewBuilder contained: @escaping (ValueContainer.Value) -> ValueConsumer) {
         self.valueLoader = loader
         self.containedView = contained
     }
@@ -35,3 +36,5 @@ struct ValueLoadingContainerView<ValueConsumer: View, ValueContainer: ValueLoade
         self.valueLoader.load()
     }
 }
+
+

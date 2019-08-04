@@ -10,11 +10,11 @@ import Foundation
 import GoogleAPIClientForREST
 
 protocol YouTubeObjectable {
+    var id: String { get }
     var title: String { get }
     var publicationDate: Date { get }
     var publicDescription: String { get }
-    var id: String { get }
 
-    var thumbnailDetails: GTLRYouTube_ThumbnailDetails { get }
+    var thumbnailDetails: ThumbnailDetails? { get }
 }
 

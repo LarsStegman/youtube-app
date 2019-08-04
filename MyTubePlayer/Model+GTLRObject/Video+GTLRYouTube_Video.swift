@@ -12,20 +12,20 @@ import GoogleAPIClientForREST
 let dateFormatter = ISO8601DateFormatter()
 
 extension Video {
-    convenience init?(from: GTLRYouTube_Video) {
+    init?(from: GTLRYouTube_Video) {
         guard let dS = from.contentDetails?.duration,
-            let d = dateFormatter.interval(from: dS) else {
+            let d = dateFormatter.interval(from: dS),
+            let channelId = from.snippet?.channelId else {
             return nil
         }
-
-        let channel = Channel(id: from.snippet!.channelId!, title: from.snippet!.channelTitle!)
 
         var liveData: LiveBroadcastInformation? = nil
         if let live = from.liveStreamingDetails {
             liveData = LiveBroadcastInformation(from: live)
         }
 
-        self.init(from: from, channel: channel, duration: d, liveData: liveData)
+        let base = YTBaseStruct(from: from)
+        self.init(base: base, channelId: channelId, duration: d, liveData: liveData)
     }
 }
 
@@ -47,8 +47,12 @@ extension GTLRYouTube_Video: YouTubeObjectable {
         return self.identifier!
     }
 
-    var thumbnailDetails: GTLRYouTube_ThumbnailDetails {
-        return self.snippet!.thumbnails!
+    var thumbnailDetails: ThumbnailDetails? {
+        guard let gtlrThumbnails = self.snippet?.thumbnails else {
+            return nil
+        }
+
+        return ThumbnailDetails(from: gtlrThumbnails)
     }
 
     var title: String {

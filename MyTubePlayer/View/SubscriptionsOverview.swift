@@ -58,16 +58,6 @@ struct SubscriptionCell: View {
     }
 }
 
-extension Optional: Comparable where Wrapped: Comparable {
-    public static func < (lhs: Optional<Wrapped>, rhs: Optional<Wrapped>) -> Bool {
-        switch (lhs, rhs) {
-        case (.some(let ld), .some(let rd)): return ld < rd
-        case _, _: return true
-        }
-    }
-}
-
-
 
 struct SubscriptionListView: View {
     @ObservedObject var subscriptions: SubscriptionList
@@ -86,6 +76,18 @@ struct SubscriptionListView: View {
             Image(systemName: "arrow.up.arrow.down")
                 .imageScale(.large)
         }
+    }
+
+    private var sortingSheet: ActionSheet {
+        ActionSheet(
+            title: Text("Sort on"),
+            message: nil,
+            buttons: [
+                .default(Text("Title, descending"), action: { self.sort = .descending(on: \.title) }),
+                .default(Text("Title, ascending"), action: { self.sort = .ascending(on: \.title) }),
+                .default(Text("Subscription date"), action: { self.sort = .descending(on: \.publicationDate) }),
+                .cancel()
+        ])
     }
 
     @State private var showingAlert = false
@@ -111,34 +113,20 @@ struct SubscriptionListView: View {
             Text("\(orderedSubscriptions.count) subscriptions")
             ForEach(orderedSubscriptions, id: \.id) { sub in
                 NavigationLink(
-                    destination: ValueLoadingContainerView(
-                        GTLRObjectLoader(sub.channel, service: self.dataController.gtlrService),
-                        contained: { channel in
-                            Text(channel.title ?? "Loading simple text")
-                            Divider()
-                            ChannelNameView(channel: channel)
-//                            Divider()
-//                            ChannelView(channel: channel)
-                            Spacer()
-                        }
-                    )) {
-                        SubscriptionCell(subscription: sub)
-                    }
+                    destination:
+                    ValueLoadingContainerView(
+                        GTLRLoader(sub.baseChannel, service: self.dataController.gtlrService),
+                        contained: { loadedChannel in
+                            ChannelView(channel: loadedChannel)
+                    })
+                ) {
+                    SubscriptionCell(subscription: sub)
+                }
             }
             .onDelete(perform: delete(subscription:))
         }
         .navigationBarItems(trailing: sortButton)
-        .actionSheet(isPresented: self.$showSortingOptions) {
-            ActionSheet(
-                title: Text("Sort on"),
-                message: nil,
-                buttons: [
-                    .default(Text("Title, descending"), action: { self.sort = .descending(on: \.title) }),
-                    .default(Text("Title, ascending"), action: { self.sort = .ascending(on: \.title) }),
-                    .default(Text("Subscription date"), action: { self.sort = .descending(on: \.publicationDate) }),
-                    .cancel()
-            ])
-        }
+        .actionSheet(isPresented: self.$showSortingOptions, content: { self.sortingSheet })
         .alert(isPresented: $showingAlert) {
             var message: Text? = nil
             if let text = self.alert?.localizedDescription {
