@@ -13,6 +13,11 @@ extension Channel {
     init?(from: GTLRYouTube_Channel) {
         self.base = YTBaseStruct(from: from)
         self.uploadsId = from.contentDetails?.relatedPlaylists?.uploads
+        if let img = from.brandingSettings?.image {
+            self.banner = ChannelBanner(from: img)
+        } else {
+            self.banner = nil
+        }
     }
 }
 

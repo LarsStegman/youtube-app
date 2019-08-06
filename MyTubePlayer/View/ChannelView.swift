@@ -16,9 +16,9 @@ struct ChannelView: View {
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                Image("ba_banner")
-                    .resizable()
-                    .scaledToFit()
+                if channel.banner != nil {
+                    BannerView(banner: channel.banner!)
+                }
 
                 Group {
                     ChannelNameView(channel: self.channel)

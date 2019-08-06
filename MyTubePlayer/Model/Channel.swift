@@ -13,10 +13,12 @@ import GoogleAPIClientForREST
 struct Channel: YTStruct, Codable {
     let base: YTBaseStruct
     let uploadsId: String?
+    let banner: ChannelBanner?
 
-    init(base: YTBaseStruct, uploadsId: String? = nil) {
+    init(base: YTBaseStruct, uploadsId: String? = nil, banner: ChannelBanner? = nil) {
         self.base = base
         self.uploadsId = uploadsId
+        self.banner = banner
     }
 
     subscript<T>(dynamicMember keyPath: KeyPath<YTBaseStruct, T>) -> T {

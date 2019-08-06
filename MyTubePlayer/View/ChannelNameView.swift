@@ -14,9 +14,13 @@ struct ChannelNameView: View {
 
     @State var isSubscribed = false
 
+    var image: ImageLoadable {
+        return channel.thumbnails?.thumbnails[.high]?.url ?? Image(systemName: "exclamationmark.circle")
+    }
+
     var body: some View {
         HStack(alignment: .center) {
-            BannerImage()
+            AvatarView(image: image)
                 .frame(width: 60, height: 60)
 
             VStack(alignment: .leading, spacing: 4) {

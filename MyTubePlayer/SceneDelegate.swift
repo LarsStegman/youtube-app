@@ -26,6 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.rootViewController = UIHostingController(
                 rootView: RootView()
                     .environmentObject(data)
+                    .accentColor(.orange)
             )
             self.window = window
             window.makeKeyAndVisible()
