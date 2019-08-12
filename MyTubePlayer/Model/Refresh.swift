@@ -9,25 +9,25 @@
 import Foundation
 import GoogleAPIClientForREST
 
-protocol YTRefreshable: YTStruct {
+protocol YTLoadable {
     associatedtype Q: SGTLRQuery
     var isLoaded: Bool { get }
-    var refreshQuery: Q? { get }
+    var loadQuery: Q? { get }
 
     init?(from: Q.Response)
 }
 
-extension YTRefreshable {
+extension YTLoadable where Self: YTStruct {
     var isLoaded: Bool {
         return self.base.isLoaded
     }
 }
 
-protocol YTStructRefreshable: YTRefreshable where Q: SGTLRCollectionQuery {
+protocol YTStructLoadable: YTLoadable where Q: SGTLRCollectionQuery {
     init?(from: Q.Response.Element)
 }
 
-extension YTStructRefreshable where Q: SGTLRCollectionQuery {
+extension YTStructLoadable where Q: SGTLRCollectionQuery {
     init?(from: Q.Response) {
         guard let item = Array(from).first else {
             return nil
@@ -37,21 +37,28 @@ extension YTStructRefreshable where Q: SGTLRCollectionQuery {
     }
 }
 
-extension Channel: YTStructRefreshable {
-    var refreshQuery: GTLRYouTubeQuery_ChannelsList? {
+protocol YTCollectionLoadable: YTStructLoadable {
+    func load<C: Collection>(items: C) where C.Element == Q.Response.Element
+}
+
+extension Channel: YTStructLoadable {
+    var loadQuery: GTLRYouTubeQuery_ChannelsList? {
         return SGTLRQueries.completeChannel(id: self.id)
     }
 }
 
+extension Playlist: YTStructLoadable {
+    var loadQuery: GTLRYouTubeQuery_PlaylistsList? {
+        return SGTLRQueries.completePlaylist(id: self.id)
+    }
+}
 
-//extension Playlist: YouTubeObjectRefreshable {
-//    var refreshQuery: GTLRYouTubeQuery_PlaylistsList? {
-//        return SGTLRQueries.completePlaylist(id: self.id)
+//extension PlaylistItems: YTStructLoadable {
+//    var isLoaded: Bool {
+//        return self.items?.count == self.count
 //    }
-//}
 //
-//extension Video: YouTubeObjectRefreshable {
-//    var refreshQuery: GTLRYouTubeQuery_VideosList? {
-//        return SGTLRQueries.completeVideo(id: self.id)
+//    var loadQuery: GTLRYouTubeQuery_PlaylistItemsList? {
+//        return SGTLRQueries.playlistItems(
 //    }
 //}

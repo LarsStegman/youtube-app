@@ -12,14 +12,12 @@ struct ChannelNameView: View {
     @EnvironmentObject var dataController: DataController
     var channel: Channel
 
-    @State var isSubscribed = false
-
     var image: ImageLoadable {
-        return channel.thumbnails?.thumbnails[.high]?.url ?? Image(systemName: "exclamationmark.circle")
+        return channel.thumbnails?.thumbnails[.high]?.url ?? Image(systemName: "exclamationmark.circle").resizable()
     }
 
     var body: some View {
-        HStack(alignment: .center) {
+        HStack(alignment: VerticalAlignment.center) {
             AvatarView(image: image)
                 .frame(width: 60, height: 60)
 
@@ -28,7 +26,17 @@ struct ChannelNameView: View {
                     .font(.largeTitle)
 
                 if dataController.authenticationController.isSignedIn {
-                    SubscribeButton(isSubscribed: self.$isSubscribed)
+                    SubscribeButton(isSubscribed: Binding<Bool>(
+                        get: {
+                            self.dataController.userInteractionService?.subscriptions.isSubscribed(to: self.channel) ?? false
+                        }, set: { shouldSubscribe in
+                            guard let subs = self.dataController.userInteractionService?.subscriptions else {
+                                return
+                            }
+
+                            subs.subscribe(to: self.channel, isSubscribed: shouldSubscribe)
+                        }
+                    ))
                 }
             }
         }

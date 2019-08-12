@@ -24,6 +24,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let data = (UIApplication.shared.delegate as! MyTubeAppDelegate).dataController
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(
+//                rootView:
+//                    ValueLoadingContainerView(
+//                        GTLRLoader(Playlist(base: YTBaseStruct(id: "UUJYJgj7rzsn0vdR7fkgjuIA"),
+//                                            channelId: "UCJYJgj7rzsn0vdR7fkgjuIA",
+//                                            playlistItems: PlaylistItems(playlistId: "UUJYJgj7rzsn0vdR7fkgjuIA",
+//                                                                         count: nil, items: nil)),
+//                                   service: data.gtlrService)) {
+//                                    PlaylistListView(playlist: $0)
+//                    }
+//                    .environmentObject(data)
                 rootView: RootView()
                     .environmentObject(data)
                     .accentColor(.orange)

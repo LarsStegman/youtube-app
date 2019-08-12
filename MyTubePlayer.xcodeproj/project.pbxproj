@@ -61,6 +61,7 @@
 		48AD5EDA22F71483004134E5 /* GTLRLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AD5ED922F71483004134E5 /* GTLRLoader.swift */; };
 		48AD5EDC22F7340E004134E5 /* Channel+GTLRYouTube_Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AD5EDB22F7340E004134E5 /* Channel+GTLRYouTube_Channel.swift */; };
 		48AD5EDE22F742A5004134E5 /* Base+YTObjectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AD5EDD22F742A5004134E5 /* Base+YTObjectable.swift */; };
+		48B8EDF222FA22BF002CCA80 /* PlaylistListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B8EDF122FA22BF002CCA80 /* PlaylistListView.swift */; };
 		48D59B0022E88EAA00202940 /* ChannelNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D59AFF22E88EAA00202940 /* ChannelNameView.swift */; };
 		48D59B0222E88EDC00202940 /* SubscribeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D59B0122E88EDC00202940 /* SubscribeButton.swift */; };
 		48D59B0422E8912600202940 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D59B0322E8912600202940 /* AvatarView.swift */; };
@@ -127,6 +128,7 @@
 		48AD5ED922F71483004134E5 /* GTLRLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTLRLoader.swift; sourceTree = "<group>"; };
 		48AD5EDB22F7340E004134E5 /* Channel+GTLRYouTube_Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Channel+GTLRYouTube_Channel.swift"; sourceTree = "<group>"; };
 		48AD5EDD22F742A5004134E5 /* Base+YTObjectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Base+YTObjectable.swift"; sourceTree = "<group>"; };
+		48B8EDF122FA22BF002CCA80 /* PlaylistListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistListView.swift; sourceTree = "<group>"; };
 		48D59AFF22E88EAA00202940 /* ChannelNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelNameView.swift; sourceTree = "<group>"; };
 		48D59B0122E88EDC00202940 /* SubscribeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeButton.swift; sourceTree = "<group>"; };
 		48D59B0322E8912600202940 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
@@ -264,6 +266,7 @@
 				48D59AFF22E88EAA00202940 /* ChannelNameView.swift */,
 				48D59B0322E8912600202940 /* AvatarView.swift */,
 				48544D0F22EAE9FE0047A185 /* BannerView.swift */,
+				48B8EDF122FA22BF002CCA80 /* PlaylistListView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -526,6 +529,7 @@
 				487C3BEB22E249D500C68C9A /* Publisher+Extensions.swift in Sources */,
 				487C3BF622E249E100C68C9A /* GTLRService+Publisher.swift in Sources */,
 				4872786722E76FA800C3BE1B /* Errors.swift in Sources */,
+				48B8EDF222FA22BF002CCA80 /* PlaylistListView.swift in Sources */,
 				4846F0A722E3B42B00174603 /* ProfileView.swift in Sources */,
 				4872786322E75ECC00C3BE1B /* BasePublisher.swift in Sources */,
 				4846F0A122E39AC300174603 /* SignInView.swift in Sources */,

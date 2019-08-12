@@ -12,30 +12,93 @@ import SwiftUI
 import GoogleAPIClientForREST
 
 
-class GTLRLoader<O: YTStructRefreshable>: ValueLoader, ObservableObject {
+class GTLRLoader<O: YTStructLoadable>: ValueLoader, ObservableObject, Combine.Subscriber {
+    typealias Input = O.Q.Response
+    typealias Failure = LoadingError
     typealias Value = O
+
     let service: GTLRService
 
     @Published var data: O
+    @Published var status: LoadingStatus = .uninit
+
     init(_ data: O, service: GTLRService) {
         self.data = data
         self.service = service
     }
 
-    private var loader: Cancellable? = nil
+    deinit {
+        self.subscription?.cancel()
+    }
+
+    private var lastLoading: AnyPublisher<O.Q.Response, LoadingError>? = nil
     func load() {
-        self.loader?.cancel()
-        self.loader = nil
-        if !data.isLoaded, let q = data.refreshQuery {
-            self.loader = self.service.publisher(for: q)
-                .ignoreError()
-                .sink(receiveCompletion: { _ in
-                    self.loader = nil
-                }, receiveValue: { loadedValue in
-                    if let d = O.init(from: loadedValue) {
-                        self.data = d
-                    }
-                })
+        self.subscription?.cancel()
+        self.subscription = nil
+        if self.status != .loading, let q = data.loadQuery {
+            self.status = .loading
+            // TODO: Does the publisher maybe get dereferenced immediately?
+            self.lastLoading = self.service.publisher(for: q)
+                .mapError { err -> LoadingError in
+                    return LoadingError.loadingFailed
+                }
+                .eraseToAnyPublisher()
+
+            self.lastLoading?.subscribe(self)
             }
+    }
+
+    fileprivate var subscription: Combine.Subscription? = nil
+    func receive(subscription: Combine.Subscription) {
+        self.subscription = subscription
+    }
+
+    func receive(_ input: O.Q.Response) -> Subscribers.Demand {
+        if let response = O.init(from: input) {
+            self.data = response
+            self.status = .finished
+        } else {
+            self.status = .failure(.decodingFailed)
+        }
+
+        return .none
+    }
+
+    func receive(completion: Subscribers.Completion<LoadingError>) {
+        switch completion {
+        case .finished:
+            if case .failure(_) = self.status {
+                // Do nothing
+            } else {
+                self.status = .finished
+            }
+        case .failure(let err): self.status = .failure(err)
+        }
+
+        self.subscription = nil
+        self.lastLoading = nil
+    }
+
+    func cancel() {
+        self.subscription?.cancel()
+        self.subscription = nil
+        self.lastLoading = nil
+        self.status = .cancelled
+    }
+}
+
+class GTLRCollectionLoader<O: YTCollectionLoadable>: GTLRLoader<O>, ContinuousValueLoader {
+    private var remainingDemand: Subscribers.Demand = .max(1)
+    func loadMore() {
+        self.remainingDemand += 1
+        self.subscription?.request(self.remainingDemand)
+    }
+
+    override func receive(_ input: O.Q.Response) -> Subscribers.Demand {
+        self.objectWillChange.send()
+        self.data.load(items: Array(input))
+        self.remainingDemand -= 1
+        return self.remainingDemand
+        // TODO: Update status
     }
 }

@@ -52,7 +52,7 @@ class CachingCancellablePublisher<R, E: Error>: Publisher {
     func receive<S: Subscriber>(subscriber: S) where S.Failure == Failure, S.Input == Output {
         let subscription = createSubscription(for: subscriber)
 
-        self.cache[subscription.combineIdentifier] = []
+        self.cache[subscriber.combineIdentifier] = []
         self.subscriptions.append(subscription)
         subscriber.receive(subscription: subscription)
     }

@@ -84,6 +84,14 @@ class SubscriptionList: ObservableObject {
     }
 
     var deleteSubscription: Cancellable? = nil
+    func unsubscribe(from channel: Channel) -> AnyPublisher<Never, Error> {
+        guard let sub = self.subscriptions.first(where: {$0.channelId == channel.id}) else {
+            return Empty(completeImmediately: true).eraseToAnyPublisher()
+        }
+
+        return self.unsubscribe(from: sub)
+    }
+
     func unsubscribe(from subscription: Subscription) -> AnyPublisher<Never, Error> {
         let unsubscribing = self.service.publisher(for: SGTLRQueries.unsubscribe(subscription.id))
         self.deleteSubscription = unsubscribing.sink(
@@ -95,5 +103,23 @@ class SubscriptionList: ObservableObject {
         })
         
         return unsubscribing.eraseToAnyPublisher()
+    }
+
+    func subscribe(to channel: Channel) {
+        fatalError("Subscribing is not yet implemented")
+    }
+
+    func isSubscribed(to channel: Channel) -> Bool {
+        return self.subscriptions.first(where: {$0.channelId == channel.id}) != nil
+    }
+}
+
+extension SubscriptionList {
+    func subscribe(to channel: Channel, isSubscribed: Bool) {
+        if isSubscribed {
+            self.subscribe(to: channel)
+        } else {
+            self.unsubscribe(from: channel)
+        }
     }
 }

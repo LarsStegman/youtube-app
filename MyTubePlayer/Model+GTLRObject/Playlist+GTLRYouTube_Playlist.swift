@@ -16,7 +16,10 @@ extension Playlist {
         }
 
         let base = YTBaseStruct(from: from)
-        self.init(base: base, channelId: channelId)
+        let playlistItems = PlaylistItems(playlistId: base.id,
+                                          count: from.contentDetails?.itemCount?.intValue ?? 0,
+                                          items: [])
+        self.init(base: base, channelId: channelId, playlistItems: playlistItems)
     }
 }
 
