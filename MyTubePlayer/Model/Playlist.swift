@@ -7,17 +7,18 @@
 //
 
 import Foundation
+import GoogleAPIClientForREST
 
 @dynamicMemberLookup
 struct Playlist: YTStruct, Codable {
     let base: YTBaseStruct
     let channelId: String
-    let playlistItems: PlaylistItems
+    var count: Int
 
-    init(base: YTBaseStruct, channelId: String, playlistItems: PlaylistItems) {
+    init(base: YTBaseStruct, channelId: String, count: Int = 0) {
         self.base = base
         self.channelId = channelId
-        self.playlistItems = playlistItems
+        self.count = count
     }
 
     subscript<T>(dynamicMember keyPath: KeyPath<YTBaseStruct, T>) -> T {
@@ -30,7 +31,6 @@ struct Playlist: YTStruct, Codable {
 struct PlaylistItems: Codable {
     let playlistId: String
     let count: Int?
-    var items: [PlaylistItem]?
 }
 
 @dynamicMemberLookup
@@ -40,8 +40,19 @@ struct PlaylistItem: YTStruct, Codable {
     let channelTitle: String
     let playlistId: String
 
-    let position: Int
+    var position: Int
     let videoId: String
+
+    init(base: YTBaseStruct, channelId: String, channelTitle: String,
+         playlistId: String, position: Int, videoId: String) {
+        self.base = base
+        self.channelId = channelId
+        self.channelTitle = channelTitle
+        self.playlistId = playlistId
+        
+        self.position = position
+        self.videoId = videoId
+    }
 
     subscript<T>(dynamicMember keyPath: KeyPath<YTBaseStruct, T>) -> T {
         get {

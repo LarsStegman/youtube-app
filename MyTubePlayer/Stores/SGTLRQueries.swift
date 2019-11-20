@@ -37,4 +37,18 @@ extension SGTLRQueries {
         q.maxResults = 1
         return q
     }
+
+    static func playlistItems(playlistId id: String, maxResults: Int) -> GTLRYouTubeQuery_PlaylistItemsList {
+        let q = GTLRYouTubeQuery_PlaylistItemsList.query(withPart: "snippet")
+        q.playlistId = id
+        q.maxResults = UInt(max(0, maxResults))
+        return q
+    }
+
+    static func completePlaylistItem(id: String) -> GTLRYouTubeQuery_PlaylistItemsList {
+        let q = GTLRYouTubeQuery_PlaylistItemsList.query(withPart: "snippet")
+        q.identifier = id
+        q.maxResults = 1
+        return q
+    }
 }

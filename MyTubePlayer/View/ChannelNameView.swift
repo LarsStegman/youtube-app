@@ -42,3 +42,15 @@ struct ChannelNameView: View {
         }
     }
 }
+
+struct ChannelNameViewPreview: PreviewProvider {
+    static var previews: some View {
+        ChannelNameView(channel:
+            Channel(base: YTBaseStruct(id: "1",
+                                       title: "Test channel",
+                                       publicationDate: nil,
+                                       description: nil,
+                                       thumbnails: nil)))
+            .environmentObject(DataController())
+    }
+}

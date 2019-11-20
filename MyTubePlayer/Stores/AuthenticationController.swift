@@ -18,7 +18,7 @@ class AuthenticationController: NSObject, GIDSignInDelegate {
     }
 
     var isSignedIn: Bool {
-        return GIDSignIn.sharedInstance().hasAuthInKeychain()
+        return GIDSignIn.sharedInstance().hasPreviousSignIn()
     }
 
     var delegate: AuthenticationControllerDelegate?
@@ -26,10 +26,13 @@ class AuthenticationController: NSObject, GIDSignInDelegate {
     init(delegate: AuthenticationControllerDelegate? = nil) {
         super.init()
         self.delegate = delegate
+    }
+
+    func setupSignIn() {
         GIDSignIn.sharedInstance().clientID = SecretsStore.getKey(for: .clientID)
         GIDSignIn.sharedInstance().scopes = SecretsStore.getKey(for: .requiredScopes)
         GIDSignIn.sharedInstance().delegate = self
-        GIDSignIn.sharedInstance().signInSilently()
+        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
     }
 
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {

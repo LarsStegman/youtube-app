@@ -12,7 +12,7 @@ extension Optional: Comparable where Wrapped: Comparable {
     public static func < (lhs: Optional<Wrapped>, rhs: Optional<Wrapped>) -> Bool {
         switch (lhs, rhs) {
         case (.some(let ld), .some(let rd)): return ld < rd
-        case _, _: return true
+        case _: return true
         }
     }
 }

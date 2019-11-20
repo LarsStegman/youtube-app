@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/larsstegman/Developer/MyTubePlayer/MyTubePlayer/View/CompactPlayablesList.swift">
+   </FileRef>
+   <FileRef
       location = "group:MyTubePlayer.xcodeproj">
    </FileRef>
    <FileRef

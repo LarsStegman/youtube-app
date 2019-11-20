@@ -10,29 +10,24 @@ import SwiftUI
 import Combine
 import GoogleAPIClientForREST
 
-protocol ValueLoader: Combine.ObservableObject {
+protocol ValueLoader: Combine.ObservableObject, Cancellable {
     associatedtype Value
 
-    var data: Value { get set }
+    var data: Value { get }
 
     func load()
-    func cancel()
-}
-
-protocol ContinuousValueLoader: ValueLoader where Value: YTCollectionLoadable {
-    func loadMore()
 }
 
 struct ValueLoadingContainerView<ValueConsumer: View, ValueContainer: ValueLoader>: View {
+    @EnvironmentObject var dataController: DataController
     @ObservedObject var valueLoader: ValueContainer
     let containedView: (ValueContainer.Value) -> ValueConsumer
     
-    init(_ loader: ValueContainer,
+    init(loader: ValueContainer,
          @ViewBuilder contained: @escaping (ValueContainer.Value) -> ValueConsumer) {
         self.valueLoader = loader
         self.containedView = contained
     }
-
 
     var body: some View {
         containedView(valueLoader.data)
@@ -41,21 +36,42 @@ struct ValueLoadingContainerView<ValueConsumer: View, ValueContainer: ValueLoade
     }
 }
 
-struct ContinuousValueLoadingContainerView<ValueConsumer: View, ValueContainer: ContinuousValueLoader>: View {
-    @ObservedObject var valueLoader: ValueContainer
-    let containedView: (ValueContainer.Value, () -> Void) -> ValueConsumer
+protocol PageLoader: ValueLoader, PageLoadingController where Value == [Element] {
+    associatedtype Element
+    associatedtype Controller: PageLoadingController
 
-    init(_ loader: ValueContainer,
-         @ViewBuilder contained: @escaping (ValueContainer.Value, () -> Void) -> ValueConsumer) {
-        self.valueLoader = loader
+    var controller: Controller { get }
+}
+
+protocol PageLoadingController: ObservableObject {
+    func loadNextPage()
+    func reload()
+
+    var allLoaded: Bool { get }
+
+    var isLoading: Binding<Bool> { get }
+    var status: LoadingStatus { get }
+}
+
+struct PageLoadingContainerView<ValueConsumer: View, PageContainer: PageLoader>: View {
+    /// A view that can display the page data.
+    /// - Parameters:
+    ///     - data: the data to display
+    ///     - nextPage: A closure that allows the view to load the next page
+    typealias PageViewBuilder = (_ data: [PageContainer.Element], _ controller: PageContainer.Controller) -> ValueConsumer
+
+    @EnvironmentObject var dataController: DataController
+    @ObservedObject var pageLoader: PageContainer
+    let containedView: PageViewBuilder
+
+    init(loader: PageContainer, @ViewBuilder contained: @escaping PageViewBuilder) {
+        self.pageLoader = loader
         self.containedView = contained
     }
 
     var body: some View {
-        containedView(valueLoader.data, valueLoader.loadMore)
-            .onAppear(perform: valueLoader.load)
-            .onDisappear(perform: valueLoader.cancel)
+        containedView(self.pageLoader.data, self.pageLoader.controller)
+            .onAppear(perform: pageLoader.load)
+            .onDisappear(perform: pageLoader.cancel)
     }
 }
-
-

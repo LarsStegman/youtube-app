@@ -13,20 +13,19 @@ struct SubscriptionsOverview: View {
     @EnvironmentObject var data: DataController
 
     var body: some View {
-        let subview: AnyView
-        if let userService = data.userInteractionService {
-            subview = AnyView(SubscriptionListView(subscriptions: userService.subscriptions))
-        } else {
-            subview = AnyView(VStack {
-                Text("😰")
-                    .font(.largeTitle)
-                Text("No signed in user")
-            })
-        }
-
-        return NavigationView {
-            subview
-                .navigationBarTitle("Subscriptions")
+        NavigationView {
+            Group {
+                if data.userInteractionService != nil {
+                    SubscriptionListView(subscriptions: data.userInteractionService!.subscriptions)
+                } else {
+                    VStack {
+                        Text("😰")
+                            .font(.largeTitle)
+                        Text("No signed in user")
+                    }
+                }
+            }
+            .navigationBarTitle("Subscriptions")
         }
     }
 }
@@ -42,6 +41,10 @@ struct SubscriptionCell: View {
         }
     }
 
+    var descriptionLabel: String? {
+        return subscription.description == "" ? nil : subscription.description
+    }
+
     var body: some View {
         HStack {
             Image(systemName: self.placeholderImageName)
@@ -50,9 +53,11 @@ struct SubscriptionCell: View {
             VStack(alignment: .leading) {
                 Text(subscription.title ?? subscription.id)
                     .font(.body)
-                Text(subscription.description ?? "No description")
-                    .font(.footnote)
-                    .lineLimit(1)
+                if descriptionLabel != nil {
+                    Text(descriptionLabel!)
+                        .font(.footnote)
+                        .lineLimit(1)
+                }
             }
         }
     }
@@ -115,7 +120,7 @@ struct SubscriptionListView: View {
                 NavigationLink(
                     destination:
                     ValueLoadingContainerView(
-                        GTLRLoader(sub.baseChannel, service: self.dataController.gtlrService),
+                        loader: GTLRLoader(sub.baseChannel, service: self.dataController.gtlrService),
                         contained: { loadedChannel in
                             ChannelView(channel: loadedChannel)
                     })

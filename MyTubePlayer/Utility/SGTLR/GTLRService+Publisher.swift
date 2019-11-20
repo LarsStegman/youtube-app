@@ -49,15 +49,15 @@ class SGTLRPublisher<Q: SGTLRQuery>: CachingCancellablePublisher<Q.Response, Err
                        withError error: Error?) {
         guard let obj = object else {
             if let err = error {
-                self.complete(.failure(err))
+                self.send(completion: .failure(err))
             } else {
-                self.complete(.finished)
+                self.send(completion: .finished)
             }
             return
         }
 
-        self.send(obj)
-        self.complete(.finished)
+        self.send(value: obj)
+        self.send(completion: .finished)
         self.ticket = nil
     }
 
@@ -74,8 +74,9 @@ class SGTLRCollectionPublisher<Q: SGTLRCollectionQuery>: CachingCancellablePubli
     // MARK: Publisher
     let service: GTLRService
 
-    private(set) var originalQuery: Q
+    private let originalQuery: Q
     private var nextQuery: Q? = nil
+    private var hasInitialised = false
 
     init(query: Q, service: GTLRService) {
         self.originalQuery = query
@@ -84,6 +85,7 @@ class SGTLRCollectionPublisher<Q: SGTLRCollectionQuery>: CachingCancellablePubli
     }
 
     private func executeNextQuery() {
+        self.hasInitialised = true
         guard let query = self.nextQuery else {
             return
         }
@@ -92,11 +94,13 @@ class SGTLRCollectionPublisher<Q: SGTLRCollectionQuery>: CachingCancellablePubli
         self.execute(query)
     }
 
+    private var currentPagePublisher: SGTLRPublisher<Q>? = nil
+
     private func execute(_ query: Q) {
         self.pageSubscription = nil
-        self.service.publisher(for: query).receive(subscriber: self)
+        self.currentPagePublisher = self.service.publisher(for: query)
+        self.currentPagePublisher?.subscribe(self)
     }
-
 
     // MARK: Subscriber
     typealias Input = Q.Response
@@ -113,22 +117,39 @@ class SGTLRCollectionPublisher<Q: SGTLRCollectionQuery>: CachingCancellablePubli
             self.nextQuery = nextQuery
         }
 
-        self.send(input)
+        self.send(value: input)
         return self.remainingDemand.values.max() ?? .none
     }
 
     func receive(completion: Combine.Subscribers.Completion<Error>) {
         self.pageSubscription = nil
+        self.currentPagePublisher = nil
         if case .finished = completion {
             if self.nextQuery == nil {
-                self.complete(.finished)
+                self.send(completion: .finished)
             }
         } else {
-            self.complete(completion)
+            self.send(completion: completion)
         }
     }
 
     func receive(subscription: Combine.Subscription) {
         self.pageSubscription = subscription
+    }
+
+    override func receive<S>(subscriber: S) where S : Subscriber, S.Failure == Failure, S.Input == Output {
+        super.receive(subscriber: subscriber)
+        if !self.hasInitialised {
+            self.executeNextQuery()
+        }
+    }
+
+    override func request<S>(_ subscriber: S,
+                             _ demand: Subscribers.Demand) where Output == S.Input, Failure == S.Failure, S : Subscriber {
+        if self.cache[subscriber.combineIdentifier]?.count != demand.max {
+            self.executeNextQuery()
+        }
+
+        super.request(subscriber, demand)
     }
 }

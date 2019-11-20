@@ -54,6 +54,23 @@ final class ImageLoader: ObservableObject {
     }
 }
 
+struct ImagePlaceholder<V: View>: View {
+    let center: () -> V
+    init(@ViewBuilder center: @escaping () -> V) {
+        self.center = center
+    }
+
+    var body: some View {
+        ZStack {
+            Rectangle()
+                .foregroundColor(Color(UIColor.systemGray3))
+                .aspectRatio(16/9, contentMode: .fill)
+
+            center()
+        }
+    }
+}
+
 struct ImageLoadingView: View {
     @ObservedObject var imageLoader: ImageLoader
 
@@ -64,9 +81,18 @@ struct ImageLoadingView: View {
     var body: some View {
         Group {
             if imageLoader.status == .finished {
-                imageLoader.image!.resizable()
+                imageLoader.image!
+                    .resizable()
+            } else if imageLoader.status == .loading {
+                ImagePlaceholder {
+                    Spinner(isAnimating: true, style: .large)
+                }
             } else {
-                Spinner(isAnimating: .constant(true), style: .large)
+                ImagePlaceholder {
+                    Image(systemName: "xmark.rectangle")
+                        .imageScale(.large)
+                        .foregroundColor(Color(UIColor.lightText))
+                }
             }
         }
         .onAppear(perform: imageLoader.load)
@@ -133,6 +159,7 @@ extension URL: ImageLoadable {
             .mapError {
                 return $0 as! LoadingError
             }
+            .subscribe(on: DispatchQueue.global(qos: .userInitiated))
             .eraseToAnyPublisher()
     }
 }
@@ -140,8 +167,6 @@ extension URL: ImageLoadable {
 extension UIImage: ImageLoadable {
     func loadImage() -> AnyPublisher<Image, LoadingError> {
         return Just(Image(uiImage: self))
-            // Just's Failure type is Never
-            // Our protocol expect's it to be Error, so we need to `override` it
             .setFailureType(to: LoadingError.self)
             .eraseToAnyPublisher()
     }
@@ -150,9 +175,7 @@ extension UIImage: ImageLoadable {
 extension Image: ImageLoadable {
     func loadImage() -> AnyPublisher<Image, LoadingError> {
         return Just(self)
-        // Just's Failure type is Never
-        // Our protocol expect's it to be Error, so we need to `override` it
-        .setFailureType(to: LoadingError.self)
-        .eraseToAnyPublisher()
+            .setFailureType(to: LoadingError.self)
+            .eraseToAnyPublisher()
     }
 }

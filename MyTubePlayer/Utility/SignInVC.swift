@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 import GoogleSignIn
 
-class SignInVC: UIViewController, GIDSignInUIDelegate {
+class SignInVC: UIViewController {
     private(set) var button = GIDSignInButton()
     override func viewDidLoad() {
-        GIDSignIn.sharedInstance()?.uiDelegate = self
+        GIDSignIn.sharedInstance()?.presentingViewController = self
     }
 
     override func loadView() {

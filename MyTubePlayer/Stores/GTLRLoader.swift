@@ -12,7 +12,7 @@ import SwiftUI
 import GoogleAPIClientForREST
 
 
-class GTLRLoader<O: YTStructLoadable>: ValueLoader, ObservableObject, Combine.Subscriber {
+class GTLRLoader<O: YTLoadingIntialisable>: ValueLoader, ObservableObject, Combine.Subscriber {
     typealias Input = O.Q.Response
     typealias Failure = LoadingError
     typealias Value = O
@@ -31,21 +31,24 @@ class GTLRLoader<O: YTStructLoadable>: ValueLoader, ObservableObject, Combine.Su
         self.subscription?.cancel()
     }
 
+    fileprivate func loaderPublisher(query: O.Q) -> AnyPublisher<O.Q.Response, Error> {
+        return self.service.publisher(for: query).eraseToAnyPublisher()
+    }
+
     private var lastLoading: AnyPublisher<O.Q.Response, LoadingError>? = nil
     func load() {
         self.subscription?.cancel()
         self.subscription = nil
-        if self.status != .loading, let q = data.loadQuery {
+        if self.status != .loading {
             self.status = .loading
-            // TODO: Does the publisher maybe get dereferenced immediately?
-            self.lastLoading = self.service.publisher(for: q)
+            self.lastLoading = self.loaderPublisher(query: data.loadQuery)
                 .mapError { err -> LoadingError in
                     return LoadingError.loadingFailed
                 }
                 .eraseToAnyPublisher()
 
             self.lastLoading?.subscribe(self)
-            }
+        }
     }
 
     fileprivate var subscription: Combine.Subscription? = nil
@@ -87,18 +90,129 @@ class GTLRLoader<O: YTStructLoadable>: ValueLoader, ObservableObject, Combine.Su
     }
 }
 
-class GTLRCollectionLoader<O: YTCollectionLoadable>: GTLRLoader<O>, ContinuousValueLoader {
-    private var remainingDemand: Subscribers.Demand = .max(1)
-    func loadMore() {
-        self.remainingDemand += 1
-        self.subscription?.request(self.remainingDemand)
+///
+class GTLRPageLoader<S: YTPageLoadable>: ObservableObject, Combine.Subscriber {
+
+    typealias Input = [S.PageElement]
+    typealias Failure = LoadingError
+
+    let source: S
+    @Published var data: [S.PageElement] = []
+    @Published private(set) var status: LoadingStatus = .uninit
+
+    private let maxResults: Int
+    private let service: GTLRYouTubeService
+
+    init(source: S, maxResultsPerPage: Int = 5, service: GTLRYouTubeService) {
+        self.source = source
+        self.maxResults = maxResultsPerPage
+        self.service = service
     }
 
-    override func receive(_ input: O.Q.Response) -> Subscribers.Demand {
+    private var loader: AnyPublisher<[S.PageElement], LoadingError>? = nil
+    private var subscription: Combine.Subscription? = nil
+
+    private func resetState() {
+        self.loader = nil
+        self.subscription?.cancel()
+        self.subscription = nil
+        self.status = .uninit
+        self.data = []
+    }
+
+    func reload() {
+        Swift.print("Page loader: reload")
+        self.resetState()
+        self.status = .loading
+        self.loader = self.service.collectionPublisher(for: self.source.loadElementsQuery(maxResults: self.maxResults))
+            .tryMap { (page) in
+                return try page.map {
+                    if let item = S.PageElement.init(from: $0) {
+                        return item
+                    } else {
+                        throw LoadingError.decodingFailed
+                    }
+                }
+            }
+            .mapError { (err) -> LoadingError in
+                return (err as? LoadingError) ?? LoadingError.loadingFailed
+            }
+            .eraseToAnyPublisher()
+
+        self.loader?.subscribe(self)
+    }
+
+    func cancel() {
+        self.subscription?.cancel()
+        self.subscription = nil
+        self.loader = nil
+        self.status = .cancelled
+    }
+
+    func loadNextPageIfNeeded() {
+        guard self.status == .pageFinished else {
+            return
+        }
+
+        self.loadNextPage()
+    }
+
+    func loadNextPage() {
+        guard let sub = self.subscription else {
+            return
+        }
+
+        self.status = .loading
+        sub.request(.max(1))
+    }
+
+
+    func receive(subscription: Combine.Subscription) {
+        self.subscription = subscription
+    }
+
+    func receive(_ input: [S.PageElement]) -> Subscribers.Demand {
         self.objectWillChange.send()
-        self.data.load(items: Array(input))
-        self.remainingDemand -= 1
-        return self.remainingDemand
-        // TODO: Update status
+        self.data.append(contentsOf: input)
+        self.status = .pageFinished
+        self.objectWillChange.send()
+        return .none
+    }
+
+    func receive(completion: Subscribers.Completion<LoadingError>) {
+        self.status = completion.loadingStatus
+        self.subscription = nil
+        self.loader = nil
     }
 }
+
+extension GTLRPageLoader: PageLoader {
+    typealias Controller = GTLRPageLoader
+
+    var controller: Controller {
+        return self
+    }
+
+    var allLoaded: Bool {
+        return self.status == .finished
+    }
+
+    func load() {
+        self.reload()
+    }
+
+    typealias Element = S.PageElement
+
+    typealias Value = [S.PageElement]
+
+    var isLoading: Binding<Bool> {
+        return Binding(get: {
+            return self.status == .loading
+        }, set: { (loading) in
+            if loading {
+                self.loadNextPageIfNeeded()
+            }
+        })
+    }
+}
+

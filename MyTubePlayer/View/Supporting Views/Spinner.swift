@@ -11,7 +11,7 @@ import SwiftUI
 import UIKit
 
 struct Spinner: UIViewRepresentable {
-    @Binding var isAnimating: Bool
+    var isAnimating: Bool
 
     let hidesWhenStopped: Bool = true
     let style: UIActivityIndicatorView.Style

@@ -24,6 +24,13 @@ class BaseSubscription<Value, Failure: Error>: Combine.Subscription, Hashable, E
             self.request = request
     }
 
+    convenience init<S: Subscriber>(subscriber: S, publisher: CachingCancellablePublisher<S.Input, S.Failure>)
+        where S.Input == Value, S.Failure == Failure {
+        self.init(subscriber: subscriber, cancel: publisher.cancel, request: { demand in
+            publisher.request(subscriber, demand)
+        })
+    }
+
     func request(_ demand: Subscribers.Demand) {
         self.request?(demand)
     }
@@ -65,17 +72,12 @@ class CachingCancellablePublisher<R, E: Error>: Publisher {
 
     func createSubscription<S: Subscriber>(for subscriber: S) -> BaseSubscription<R, E>
         where S.Input == Output, S.Failure == Failure {
-            return BaseSubscription(
-                subscriber: subscriber,
-                cancel: self.cancel(subscription:),
-                request: { (demand) in
-                    self.request(subscriber, demand)
-                })
+            return BaseSubscription(subscriber: subscriber, publisher: self)
     }
 
 
     var cancellable: Cancellable? = nil
-    private func cancel(subscription sub: BaseSubscription<R, E>) {
+    fileprivate func cancel(subscription sub: BaseSubscription<R, E>) {
         if let idx = self.subscriptions.firstIndex(of: sub) {
             self.subscriptions.remove(at: idx)
         }
@@ -87,9 +89,9 @@ class CachingCancellablePublisher<R, E: Error>: Publisher {
 
     // MARK: Value management
     private(set) var remainingDemand = [CombineIdentifier: Subscribers.Demand]()
-    private var cache = [CombineIdentifier: [R]]()
+    private(set) var cache = [CombineIdentifier: [R]]()
 
-    func send(_ value: R) {
+    func send(value: R) {
         for s in self.subscriptions {
             self.cache[s.subscriber.combineIdentifier]?.append(value)
         }
@@ -97,7 +99,7 @@ class CachingCancellablePublisher<R, E: Error>: Publisher {
         self.flushCache()
     }
 
-    func complete(_ completion: Subscribers.Completion<E>) {
+    func send(completion: Subscribers.Completion<E>) {
         for s in self.subscriptions {
             s.subscriber.receive(completion: completion)
         }

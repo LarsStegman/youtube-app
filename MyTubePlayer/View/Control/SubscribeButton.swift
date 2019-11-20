@@ -38,3 +38,25 @@ struct SubscribeButton: View {
     }
 }
 
+struct SubscribeButtonPreviews: PreviewProvider {
+    static var previews: some View {
+        VStack(alignment: .leading) {
+            Text("Light")
+                .font(.largeTitle)
+
+            VStack(alignment: .leading) {
+                SubscribeButton(isSubscribed: .constant(true))
+                SubscribeButton(isSubscribed: .constant(false))
+            }.colorScheme(.light)
+            Divider()
+            Text("Dark").font(.largeTitle)
+            VStack(alignment: .leading) {
+                SubscribeButton(isSubscribed: .constant(true))
+                SubscribeButton(isSubscribed: .constant(false))
+            }.colorScheme(.dark)
+        }.accentColor(.orange)
+        .padding()
+
+    }
+}
+

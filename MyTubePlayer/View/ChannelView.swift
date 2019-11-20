@@ -10,26 +10,52 @@ import SwiftUI
 import GoogleAPIClientForREST
 
 struct ChannelView: View {
+    @EnvironmentObject var dataController: DataController
     let channel: Channel
 
     @State var selectedView = 0
+    private let channelSections = ["Uploads", "Playlists", "Info"]
+
+    var contentView: some View {
+        switch self.selectedView {
+        case 0:
+        if let uploadsPlaylist = self.channel.uploadsPlaylistBase {
+            return AnyView(
+                ValueLoadingContainerView(
+                    loader: GTLRLoader(uploadsPlaylist, service: self.dataController.gtlrService)) {
+                        PlaylistListView(playlist: $0)
+                }
+            )
+        } else {
+            return AnyView(
+                Image(systemName: "exclamationmark.circle")
+            )
+        }
+        case 1: return AnyView(VStack {
+            Text("Playlists")
+                .padding([.leading, .trailing], 8)
+            Spacer()
+            })
+        case 2: return AnyView(Text(self.channel.description ?? "Not loaded"))
+        default: return AnyView(EmptyView().background(Color.gray))
+        }
+    }
+
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-                if channel.banner != nil {
-                    BannerView(banner: channel.banner!)
+                channel.banner.map { b in
+                    BannerView(banner: b)
                 }
 
                 Group {
                     ChannelNameView(channel: self.channel)
 
                     Picker(selection: self.$selectedView, label: Text("Channel Section")) {
-                        Text("Uploads")
-                            .tag(0)
-                        Text("Playlists")
-                            .tag(1)
-                        Text("Info")
-                            .tag(2)
+                        ForEach(0..<self.channelSections.count) { i in
+                            Text(self.channelSections[i])
+                                .tag(i)
+                        }
                     }
                     .pickerStyle(SegmentedPickerStyle())
                 }
@@ -38,20 +64,18 @@ struct ChannelView: View {
                 Divider()
             }
 
-            if selectedView == 0 {
-                List(Array(Range(1...50)), id: \.self) {
-                    Text("\($0)")
-                }
-            } else if selectedView == 1 {
-                Text("Playlists")
-                    .padding([.leading, .trailing], 8)
-                Spacer()
-            }
-
+            self.contentView
         }
         .navigationBarTitle("", displayMode: .inline)
+    }
+}
 
-
-//        .navigationBarHidden(true)
+extension Channel {
+    var uploadsPlaylistBase: Playlist? {
+        if let uploads = self.uploadsId {
+            return Playlist(base: YTBaseStruct(id: uploads), channelId: self.id)
+        } else {
+            return nil
+        }
     }
 }

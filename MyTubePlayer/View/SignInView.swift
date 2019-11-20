@@ -38,7 +38,7 @@ struct SignInView: View {
     }
 }
 
-final class SignInButton: NSObject, UIViewControllerRepresentable, GIDSignInUIDelegate {
+final class SignInButton: NSObject, UIViewControllerRepresentable {
     private let vc = SignInVC()
 
     func makeUIViewController(context: Context) -> SignInVC {

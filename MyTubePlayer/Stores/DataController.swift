@@ -15,11 +15,13 @@ import Combine
 
 
 class DataController: AuthenticationControllerDelegate, ObservableObject {
-    private(set) var authenticationController = AuthenticationController()
+    private(set) var authenticationController: AuthenticationController
     @Published private(set) var userInteractionService: YTUserInteractionService? = nil
 
     init() {
+        self.authenticationController = AuthenticationController()
         self.authenticationController.delegate = self
+        self.authenticationController.setupSignIn()
     }
 
     var gtlrService: GTLRYouTubeService {

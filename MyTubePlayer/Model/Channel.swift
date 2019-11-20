@@ -30,6 +30,6 @@ struct Channel: YTStruct, Codable {
 
 extension Channel: CustomDebugStringConvertible {
     var debugDescription: String {
-        return "Channel \(self.id), title: \(self.title)"
+        return "Channel \(self.id), title: \(String(describing: self.title))"
     }
 }

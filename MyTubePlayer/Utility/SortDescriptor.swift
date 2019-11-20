@@ -81,11 +81,7 @@ extension ComparisonResult {
     }
 }
 
-extension Array {
-    mutating func sort(by descriptor: SortDescriptor<Self.Element>) {
-        self.sort(by: descriptor.orderedAscending)
-    }
-
+extension Sequence {
     func sorted(by descriptor: SortDescriptor<Self.Element>) -> [Self.Element] {
         return self.sorted(by: descriptor.orderedAscending)
     }
