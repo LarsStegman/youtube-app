@@ -30,6 +30,8 @@ struct FloatingThumbnailedView: View {
             ThumbnailView(item: item)
                 .scaledToFill()
 
+            Divider()
+
             VStack(alignment: .leading) {
                 Text(item.title)
                     .font(.headline)
@@ -52,9 +54,3 @@ struct FloatingThumbnailedView: View {
         .shadow(radius: 10)
     }
 }
-
-//struct FloatingThumbnailedView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        FloatingThumbnailedView()
-//    }
-//}

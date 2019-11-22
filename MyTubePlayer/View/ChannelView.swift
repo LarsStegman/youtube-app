@@ -42,7 +42,7 @@ struct ChannelView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             VStack(alignment: .leading) {
                 channel.banner.map { b in
                     BannerView(banner: b)

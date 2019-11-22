@@ -32,25 +32,30 @@ struct PlaylistListView: View {
 struct PlaylistItemsView<PLC: PageLoadingController>: View {
     let items: [PlaylistItem]
     @ObservedObject var itemsLoadingController: PLC
+    @EnvironmentObject var playbackQueueController: PlaybackQueueController
 
     var body: some View {
         ScrollView {
             VStack {
                 ForEach(items) { plItem in
-                    FloatingThumbnailedView(item: plItem)
-                        .scaledToFit()
+                    Button(action: {
+                        self.playbackQueueController.show(item: Video(base: YTBaseStruct(id: plItem.videoId),
+                                                                 channelId: plItem.channelId))
+                        self.playbackQueueController.start()
+                    }) {
+                        FloatingThumbnailedView(item: plItem)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .scaledToFit()
                 }
 
-                HStack {
-                    Spacer()
-                    LoadingStatusButton(status: itemsLoadingController.status, action: {
-                        self.itemsLoadingController.loadNextPage()
-                    })
-                        .foregroundColor(Color.accentColor)
-                    Spacer()
-                }
+                LoadingStatusButton(status: itemsLoadingController.status, action: {
+                    self.itemsLoadingController.loadNextPage()
+                })
+                .padding(.top)
             }
-            .padding(.horizontal)
+            .frame(minWidth: 0, maxWidth: .infinity)
+            .padding()
         }
     }
 }
@@ -68,7 +73,7 @@ extension PlaylistItem: ThumbnailItem {
         return self.publicationDate
     }
 
-    var thumbnail: Thumbnail? {
+    var thumbnail: ImageLoadable? {
         return self.base.thumbnails?.thumbnails[.maxres]
     }
 

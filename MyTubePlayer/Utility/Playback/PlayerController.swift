@@ -84,6 +84,7 @@ class PlayerController: ObservableObject {
         }
 
         self.playbackDataFetcher = self.streamFetcher.playbackData(videoId: videoId)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (completion) in
                 if case .failure(let err) = completion {
                     self.error = err
@@ -102,6 +103,7 @@ class PlayerController: ObservableObject {
         }
 
         self.player.replaceCurrentItem(with: url.asPlayerItem())
+        self.play()
     }
 
     func play() {

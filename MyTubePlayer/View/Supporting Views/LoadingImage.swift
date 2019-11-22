@@ -61,13 +61,10 @@ struct ImagePlaceholder<V: View>: View {
     }
 
     var body: some View {
-        ZStack {
-            Rectangle()
-                .foregroundColor(Color(UIColor.systemGray3))
-                .aspectRatio(16/9, contentMode: .fill)
-
-            center()
-        }
+        center()
+            .imageScale(.large)
+            .frame(minWidth: 0, maxWidth: .infinity, maxHeight: .infinity)
+            .aspectRatio(16/9, contentMode: .fit)
     }
 }
 
@@ -87,12 +84,12 @@ struct ImageLoadingView: View {
                 ImagePlaceholder {
                     Spinner(isAnimating: true, style: .large)
                 }
+                .aspectRatio(16/9, contentMode: .fit)
             } else {
                 ImagePlaceholder {
                     Image(systemName: "xmark.rectangle")
-                        .imageScale(.large)
-                        .foregroundColor(Color(UIColor.lightText))
                 }
+                .aspectRatio(16/9, contentMode: .fit)
             }
         }
         .onAppear(perform: imageLoader.load)

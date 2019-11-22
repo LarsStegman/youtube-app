@@ -25,3 +25,35 @@ struct AVPlayerLayerView: UIViewRepresentable {
         return AVPlayerLayerUIView(player: self.player)
     }
 }
+
+struct VideoPlayerView: View {
+    @EnvironmentObject var playerController: PlayerController
+
+    var body: some View {
+        AVPlayerSwiftUIViewController(player: self.playerController.player)
+    }
+}
+
+struct AVPlayerSwiftUIViewController: UIViewControllerRepresentable {
+    let player: AVPlayer
+
+    func makeUIViewController(context: Context) -> AVPlayerViewController {
+        let avPlayerVC = AVPlayerViewController()
+
+
+        return avPlayerVC
+    }
+
+    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
+        uiViewController.player = self.player
+    }
+}
+
+#if DEBUG
+struct AVPlayerSwiftUIViewControllerPreviews: PreviewProvider {
+    static var previews: some View {
+        VideoPlayerView()
+            .environmentObject(PlayerController(player: AVPlayer()))
+    }
+}
+#endif

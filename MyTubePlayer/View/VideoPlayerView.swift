@@ -16,9 +16,10 @@ struct VideoDisplayView: View {
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 0) {
-                AVPlayerLayerView(player: playerController.player)
+                VideoPlayerView()
                     .background(Color.black)
                     .aspectRatio(16/9, contentMode: .fit)
+                
                 Divider()
                 VStack {
                     Text(playerController.currentItem?.title ?? "Video title")

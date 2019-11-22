@@ -35,6 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     .environmentObject(PlaybackQueueController(playerController: self.playerController))
                     .accentColor(.orange)
         )
+
         self.window = window
         window.makeKeyAndVisible()
     }

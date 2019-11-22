@@ -48,14 +48,15 @@ struct RootView: View {
                 .navigationViewStyle(StackNavigationViewStyle())
             }
                 .frame(maxWidth: 350)
-                .background(Color(UIColor.systemBackground))
+                .clipped()
 
             Divider()
 
             VideoDisplayView()
                 .navigationViewStyle(StackNavigationViewStyle())
-                .background(Color(UIColor.systemBackground))
+                .clipped()
         }
+        .background(Color(.systemBackground))
         .edgesIgnoringSafeArea(.top)
     }
 }

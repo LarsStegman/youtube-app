@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 protocol ThumbnailViewable {
-    var thumbnail: Thumbnail? { get }
+    var thumbnail: ImageLoadable? { get }
     var caption: String? { get }
 }
 
