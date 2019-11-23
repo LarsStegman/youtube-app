@@ -15,7 +15,7 @@ protocol ThumbnailItem: ThumbnailViewable {
 }
 
 
-let formatter: DateFormatter = {
+let itemRelativeDateFormatter: DateFormatter = {
     let f = DateFormatter()
     f.doesRelativeDateFormatting = true
     f.dateStyle = .short
@@ -42,7 +42,7 @@ struct FloatingThumbnailedView: View {
                     Spacer()
 
                     item.publishDate.map { d in
-                        Text("\(d, formatter: formatter)")
+                        Text("\(d, formatter: itemRelativeDateFormatter)")
                             .font(.caption)
                     }
                 }

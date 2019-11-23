@@ -63,7 +63,7 @@ struct ImagePlaceholder<V: View>: View {
     var body: some View {
         center()
             .imageScale(.large)
-            .frame(minWidth: 0, maxWidth: .infinity, maxHeight: .infinity)
+            .flexible(axis: .all)
             .aspectRatio(16/9, contentMode: .fit)
     }
 }

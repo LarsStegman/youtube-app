@@ -147,3 +147,4 @@ iOSInjectionProject/
 # Manual
 */**/api_keys.plist
 
+*.mkv

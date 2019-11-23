@@ -37,7 +37,7 @@ struct ChannelView: View {
             Spacer()
             })
         case 2: return AnyView(Text(self.channel.description ?? "Not loaded"))
-        default: return AnyView(EmptyView().background(Color.gray))
+        default: return AnyView(Text("How did you get here? You're not supposed to be here!"))
         }
     }
 
@@ -59,12 +59,13 @@ struct ChannelView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                 }
-                    .padding([.leading, .trailing], 8)
-                    .padding(.bottom, 4)
+                .padding(.horizontal, 8)
+                .padding(.bottom, 4)
+                
                 Divider()
             }
 
-            self.contentView
+            self.contentView.flexible(axis: .vertical)
         }
         .navigationBarTitle("", displayMode: .inline)
     }

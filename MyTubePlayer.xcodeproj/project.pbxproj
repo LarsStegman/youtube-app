@@ -41,6 +41,7 @@
 		4846F0A522E3AF8400174603 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F0A422E3AF8400174603 /* SignInVC.swift */; };
 		4846F0A722E3B42B00174603 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4846F0A622E3B42B00174603 /* ProfileView.swift */; };
 		48544D1022EAE9FE0047A185 /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48544D0F22EAE9FE0047A185 /* BannerView.swift */; };
+		48578FFF2388AAAB00B108D6 /* Flexible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48578FFE2388AAAB00B108D6 /* Flexible.swift */; };
 		4857C3BE22E62AB400627A21 /* SubscriptionsOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4857C3BD22E62AB400627A21 /* SubscriptionsOverview.swift */; };
 		48580DF822F8BEB20077592E /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48580DF722F8BEB20077592E /* Spinner.swift */; };
 		485962BC232D1793008C9727 /* FloatingThumbnailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485962BB232D1793008C9727 /* FloatingThumbnailedView.swift */; };
@@ -78,7 +79,6 @@
 		48AFAE402381D579005D6CAE /* PlaybackControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AFAE3F2381D579005D6CAE /* PlaybackControllerTests.swift */; };
 		48AFAE442381D9E5005D6CAE /* 1080p_sample_vid.mkv in Resources */ = {isa = PBXBuildFile; fileRef = 48AFAE432381D9E4005D6CAE /* 1080p_sample_vid.mkv */; };
 		48AFAE4623834A54005D6CAE /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AFAE4523834A54005D6CAE /* PlayerController.swift */; };
-		48AFAE4A23842742005D6CAE /* CompactPlayablesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AFAE4923842742005D6CAE /* CompactPlayablesList.swift */; };
 		48B8EDF222FA22BF002CCA80 /* PlaylistListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B8EDF122FA22BF002CCA80 /* PlaylistListView.swift */; };
 		48D59B0022E88EAA00202940 /* ChannelNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D59AFF22E88EAA00202940 /* ChannelNameView.swift */; };
 		48D59B0222E88EDC00202940 /* SubscribeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D59B0122E88EDC00202940 /* SubscribeButton.swift */; };
@@ -136,6 +136,7 @@
 		4846F0A422E3AF8400174603 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
 		4846F0A622E3B42B00174603 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		48544D0F22EAE9FE0047A185 /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
+		48578FFE2388AAAB00B108D6 /* Flexible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flexible.swift; sourceTree = "<group>"; };
 		4857C3BD22E62AB400627A21 /* SubscriptionsOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsOverview.swift; sourceTree = "<group>"; };
 		48580DF722F8BEB20077592E /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		485962BB232D1793008C9727 /* FloatingThumbnailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingThumbnailedView.swift; sourceTree = "<group>"; };
@@ -348,6 +349,7 @@
 				48AD5ED022F5C7E9004134E5 /* Optional+Comparable.swift */,
 				48909A322361D91E00637865 /* HeteroGeneousCollectionCodable.swift */,
 				48909A382361E5D600637865 /* Dictionary+init_key.swift */,
+				48578FFE2388AAAB00B108D6 /* Flexible.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -646,6 +648,7 @@
 				4846F08122E24A8600174603 /* Subscription.swift in Sources */,
 				487C3BF422E249E100C68C9A /* GTLRYouTubeService+shared.swift in Sources */,
 				48909A392361E5D600637865 /* Dictionary+init_key.swift in Sources */,
+				48578FFF2388AAAB00B108D6 /* Flexible.swift in Sources */,
 				4846F08622E24A8600174603 /* MediaFormat.swift in Sources */,
 				483AA10F22E84A5D0045ACBF /* SGTLRQueries.swift in Sources */,
 				489EF2F023888114000A3DE1 /* ThumbnailListLayout.swift in Sources */,
@@ -688,7 +691,6 @@
 				487C3BF622E249E100C68C9A /* GTLRService+Publisher.swift in Sources */,
 				4872786722E76FA800C3BE1B /* Errors.swift in Sources */,
 				48B8EDF222FA22BF002CCA80 /* PlaylistListView.swift in Sources */,
-				48AFAE4A23842742005D6CAE /* CompactPlayablesList.swift in Sources */,
 				4846F0A722E3B42B00174603 /* ProfileView.swift in Sources */,
 				485962BE232D6570008C9727 /* ThumbnailView.swift in Sources */,
 				4872786322E75ECC00C3BE1B /* BasePublisher.swift in Sources */,
